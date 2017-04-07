@@ -18,6 +18,7 @@ namespace xbox_3
     
     public partial class Form1 : Form
     {
+        //stuff
         Controller controller;
         private State stateOld;
         public bool connected = false;

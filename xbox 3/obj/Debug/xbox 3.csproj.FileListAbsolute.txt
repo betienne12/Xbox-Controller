@@ -11,3 +11,6 @@ c:\users\brian\documents\visual studio 2015\Projects\xbox 3\xbox 3\obj\Debug\xbo
 c:\users\brian\documents\visual studio 2015\Projects\xbox 3\xbox 3\obj\Debug\xbox 3.csproj.GenerateResource.Cache
 c:\users\brian\documents\visual studio 2015\Projects\xbox 3\xbox 3\obj\Debug\xbox 3.exe
 c:\users\brian\documents\visual studio 2015\Projects\xbox 3\xbox 3\obj\Debug\xbox 3.pdb
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\bin\Debug\xbox 3.exe.config
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox 3.exe
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox 3.pdb
