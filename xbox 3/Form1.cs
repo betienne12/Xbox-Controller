@@ -18,13 +18,12 @@ namespace xbox_3
     
     public partial class Form1 : Form
     {
-        //stuff
         Controller controller;
         private State stateOld;
         public bool connected = false;
-        //private int x, y;
         private double normalizedLX, normalizedLY;
         private TcpClient client = null;
+        private Stream stm = null;
         
 
         public Form1()
@@ -50,7 +49,7 @@ namespace xbox_3
             string head = "&";
             string tail = "@";
             str = head + str + tail; ;
-            Stream stm = client.GetStream();
+            stm = client.GetStream();
             ASCIIEncoding asen = new ASCIIEncoding();
             byte[] packet = asen.GetBytes(str);
             stm.Write(packet, 0, packet.Length);   //sendd to server
@@ -166,7 +165,12 @@ namespace xbox_3
 
         }
 
-       
+        private void button2_Click_1(object sender, EventArgs e)   //disconnect button
+        {
+            stm.Close();
+            client.Close();
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             //clock started in button1()

@@ -39,6 +39,7 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // timer1
@@ -78,7 +79,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(40, 257);
+            this.textBox1.Location = new System.Drawing.Point(39, 312);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
@@ -128,11 +129,22 @@
             this.timer2.Interval = 8000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(76, 252);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(133, 57);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "Blade On";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 354);
+            this.ClientSize = new System.Drawing.Size(284, 398);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label1);
@@ -160,6 +172,7 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Button button2;
     }
 }
 
