@@ -14,3 +14,13 @@ c:\users\brian\documents\visual studio 2015\Projects\xbox 3\xbox 3\obj\Debug\xbo
 C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\bin\Debug\xbox 3.exe.config
 C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox 3.exe
 C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox 3.pdb
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\bin\Debug\xbox 3.exe
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\bin\Debug\xbox 3.pdb
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\bin\Debug\SharpDX.dll
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\bin\Debug\SharpDX.XInput.dll
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\bin\Debug\SharpDX.xml
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\bin\Debug\SharpDX.XInput.xml
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox 3.csprojResolveAssemblyReference.cache
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox_3.Form1.resources
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox_3.Properties.Resources.resources
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox 3.csproj.GenerateResource.Cache

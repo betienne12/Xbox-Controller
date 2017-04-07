@@ -102,7 +102,6 @@
             this.label1.Size = new System.Drawing.Size(50, 18);
             this.label1.TabIndex = 5;
             this.label1.Text = "Speed";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // button4
             // 
@@ -135,7 +134,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(133, 57);
             this.button2.TabIndex = 8;
-            this.button2.Text = "Blade On";
+            this.button2.Text = "Disconnect ";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 

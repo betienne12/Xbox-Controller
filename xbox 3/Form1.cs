@@ -54,8 +54,6 @@ namespace xbox_3
             byte[] packet = asen.GetBytes(str);
             stm.Write(packet, 0, packet.Length);   //sendd to server
         }
-     
-        
         public void Connect() //conect controller
         {
             controller = new Controller(UserIndex.One);
@@ -68,7 +66,6 @@ namespace xbox_3
                 
             }
         } 
-
         void Joystick()
         {
             State stick = controller.GetState();
@@ -91,11 +88,12 @@ namespace xbox_3
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)
             {
                 
-                SendPacket("hello");
+                //SendPacket("hello");
             }
             
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.B && stateNew.Gamepad.Buttons == GamepadButtonFlags.B)
             {
+                //SendPacket("hello");
                 MessageBox.Show("B pressed");
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)
@@ -150,19 +148,12 @@ namespace xbox_3
         }
         private void button5_Click(object sender, EventArgs e)  //decrease sppeed
         {
-
+            //SendPacket("hello");
         }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void timer2_Tick(object sender, EventArgs e)  //timer for keep alive connection
+        private void timer2_Tick(object sender, EventArgs e)  //timer for joystick updating
         {
             //clock started in button1()
             Joystick();
-
         }
 
         private void button2_Click_1(object sender, EventArgs e)   //disconnect button
@@ -175,6 +166,6 @@ namespace xbox_3
         {
             //clock started in button1()
             GetInput();
-        }   //timer for updating controller state
+        }   
     }
 }
