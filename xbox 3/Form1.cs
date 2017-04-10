@@ -24,7 +24,7 @@ namespace xbox_3
         private double normalizedLX, normalizedLY;
         private TcpClient client = null;
         private Stream stm = null;
-        private string str = "...";
+        private string str = "00000000";
         
         
 
@@ -47,14 +47,14 @@ namespace xbox_3
             }
         }
    
-        public void SendPacket(string str)
+        public void SendPacket(string x)
         {
             string head = "&";
             string tail = "@";
-            str = head + str + tail; ;
+            x = head + x + tail; ;
             stm = client.GetStream();
             ASCIIEncoding asen = new ASCIIEncoding();
-            byte[] packet = asen.GetBytes(str);
+            byte[] packet = asen.GetBytes(x);
             stm.Write(packet, 0, packet.Length);   //sendd to server
         }
         public void Connect() //conect controller
@@ -86,31 +86,39 @@ namespace xbox_3
         }
         void GetInput()
         {
+            //str = "00000000";
             State stateNew = controller.GetState(); 
             //buttons controlls
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)
+            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
             {
-                if (str != "&hello@")
+                /*if (str != "&hello@")  //packet to be sent
                 {
-                    MessageBox.Show("hi");
                     char[] arr = str.ToCharArray();
                     arr[1] = 'x';
+                    arr[2] = 'y';
                     str = new string(arr);
                     SendPacket(str);
 
-                }
+                }*/
+                char[] arr = str.ToCharArray();
+                string speed = "FF";
+                arr[6] = speed[0];
+                arr[7] = speed[1];
+                str = new string(arr);
+                SendPacket(str);
+
             }
-            
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.B && stateNew.Gamepad.Buttons == GamepadButtonFlags.B)
+             
+            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.B && stateNew.Gamepad.Buttons == GamepadButtonFlags.B)  //decrease speed
             {
-                SendPacket("hello");
-                MessageBox.Show("B pressed");
+                //SendPacket("hello");
+                MessageBox.Show(str);
             }
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)
+            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)  //turn on blade
             {
                 MessageBox.Show("X pressed");
             }
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Y && stateNew.Gamepad.Buttons == GamepadButtonFlags.Y)
+            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Y && stateNew.Gamepad.Buttons == GamepadButtonFlags.Y)  //turn off blade
             {
                 MessageBox.Show("Y pressed");
             }
