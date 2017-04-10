@@ -24,6 +24,8 @@ namespace xbox_3
         private double normalizedLX, normalizedLY;
         private TcpClient client = null;
         private Stream stm = null;
+        private string str = "...";
+        
         
 
         public Form1()
@@ -31,12 +33,13 @@ namespace xbox_3
             InitializeComponent();
             textBox1.Text = "Controller Settings: \r\nPress X to turn on blade \r\nPress Y to turn off Blade \r\nPress A to increase speed \r\nPress B to decrease speed";
         }   
+      
         public void Client_Connect()
         {
             try
             {
                 client = new TcpClient();
-                client.Connect("134.88.143.211", 8001);
+                client.Connect("134.88.129.30", 8001);
             }
             catch(Exception e)
             {
@@ -87,13 +90,20 @@ namespace xbox_3
             //buttons controlls
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)
             {
-                
-                //SendPacket("hello");
+                if (str != "&hello@")
+                {
+                    MessageBox.Show("hi");
+                    char[] arr = str.ToCharArray();
+                    arr[1] = 'x';
+                    str = new string(arr);
+                    SendPacket(str);
+
+                }
             }
             
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.B && stateNew.Gamepad.Buttons == GamepadButtonFlags.B)
             {
-                //SendPacket("hello");
+                SendPacket("hello");
                 MessageBox.Show("B pressed");
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)
@@ -130,7 +140,7 @@ namespace xbox_3
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
             Connect();
-            //Client_Connect();
+            Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
         }
@@ -153,7 +163,7 @@ namespace xbox_3
         private void timer2_Tick(object sender, EventArgs e)  //timer for joystick updating
         {
             //clock started in button1()
-            Joystick();
+           // Joystick();
         }
 
         private void button2_Click_1(object sender, EventArgs e)   //disconnect button
