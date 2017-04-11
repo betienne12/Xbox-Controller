@@ -24,7 +24,9 @@ namespace xbox_3
         private double normalizedLX, normalizedLY;
         private TcpClient client = null;
         private Stream stm = null;
-        private string str = "00000000"; //inital packet 
+        private string temp = "000";
+        private string str = "00077F7F"; //inital packet
+        
         
         
 
@@ -86,7 +88,7 @@ namespace xbox_3
         }
         void GetInput()
         {
-            //str = "00000000";
+            
             State stateNew = controller.GetState(); 
             //buttons controlls
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
@@ -113,7 +115,7 @@ namespace xbox_3
                 arr[6] = speed[0];
                 arr[7] = speed[1];
                 str = new string(arr);
-                SendPacket(str);
+                //SendPacket(str);
                 MessageBox.Show(str);
                
 
@@ -152,7 +154,17 @@ namespace xbox_3
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)  //turn on blade
             {
-                MessageBox.Show("X pressed");
+                /*char[] arr = str.ToCharArray();
+                char[] mask = temp.ToCharArray();
+                mask[0] = Convert.ToChar(100);
+                temp = new string(mask);
+                MessageBox.Show(temp);
+                //char test = Convert.ToChar(temp);
+                //MessageBox.Show(test.ToString());
+                //arr[2] = Convert.ToChar(temp); */
+                // temp.Substring(1, 1) = "h";   
+                str = str.Remove(2, 1).Insert(2, "1");
+                MessageBox.Show(str);
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Y && stateNew.Gamepad.Buttons == GamepadButtonFlags.Y)  //turn off blade
             {
@@ -184,7 +196,7 @@ namespace xbox_3
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
             Connect();
-            Client_Connect();
+           // Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
         }
