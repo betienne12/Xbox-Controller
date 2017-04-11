@@ -24,7 +24,7 @@ namespace xbox_3
         private double normalizedLX, normalizedLY;
         private TcpClient client = null;
         private Stream stm = null;
-        private string str = "00000000";
+        private string str = "00000000"; //inital packet 
         
         
 
@@ -91,28 +91,64 @@ namespace xbox_3
             //buttons controlls
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
             {
-                /*if (str != "&hello@")  //packet to be sent
-                {
-                    char[] arr = str.ToCharArray();
-                    arr[1] = 'x';
-                    arr[2] = 'y';
-                    str = new string(arr);
-                    SendPacket(str);
-
-                }*/
+              
                 char[] arr = str.ToCharArray();
-                string speed = "FF";
+                string speed;
+                string bit_1 = (arr[4]).ToString();
+                string bit_2= (arr[5]).ToString();
+                string val = bit_1 + bit_2;    //2 bit hex value to be added
+               // MessageBox.Show(val);
+                if (val == "F0")   //F0 = 240 last value without going over 255
+                {
+                    speed = "FF";
+                    MessageBox.Show("Max speed has been reached");
+                }
+                else
+                {
+                    int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) + 20;  //increment hex value by 5
+                    speed = intFromHex.ToString("X");
+                }
+                arr[4] = speed[0];
+                arr[5] = speed[1];
                 arr[6] = speed[0];
                 arr[7] = speed[1];
                 str = new string(arr);
                 SendPacket(str);
+                MessageBox.Show(str);
+               
 
             }
              
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.B && stateNew.Gamepad.Buttons == GamepadButtonFlags.B)  //decrease speed
             {
-                //SendPacket("hello");
+                char[] arr = str.ToCharArray();
+                string speed;
+                string bit_1 = (arr[4]).ToString();
+                string bit_2 = (arr[5]).ToString();
+                string val = bit_1 + bit_2;    //2 bit hex value to be added
+                if (val == "14")
+                 {
+                     speed = "00";
+                    MessageBox.Show("Lowest speed has been reached");
+                }
+                if(val == "00")
+                {
+                    speed = "00";
+                    MessageBox.Show("Lowest speed has been reached");
+                }
+                else
+                {
+                    int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber)-20;  //decrement hex value by 20
+                    speed = intFromHex.ToString("X");
+                }
+                arr[4] = speed[0];
+                arr[5] = speed[1];
+                arr[6] = speed[0];
+                arr[7] = speed[1];
+                str = new string(arr);
+                //SendPacket(str);
                 MessageBox.Show(str);
+
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)  //turn on blade
             {
