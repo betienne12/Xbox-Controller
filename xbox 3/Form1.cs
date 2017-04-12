@@ -154,20 +154,63 @@ namespace xbox_3
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)  //turn on blade
             {
-                temp = temp.Remove(0, 1).Insert(0, "1");
-                MessageBox.Show(temp);
-                string hexValue = Convert.ToInt32(temp).ToString("X");
-                str = str.Remove(0, 1).Insert(0, hexValue);
-                MessageBox.Show(str);
+                if (temp[0] == '1')
+                {
+                    MessageBox.Show("The Blade is already on");
+                }
+                if (temp[0] != '1')
+                {
+                    temp = temp.Remove(0, 1).Insert(0, "1");  //100
+                    //if (Convert.ToInt32(temp) >= 100)
+                    if ((str.Length != 5) && (Convert.ToInt32(temp) >= 100))
+                    {
+                        MessageBox.Show(temp);
+                        string hexValue = Convert.ToInt32(temp).ToString("X");
+                        str = str.Remove(0, 2).Insert(0, hexValue);
+                        MessageBox.Show(str);
+                    }
+                    if ((str.Length==5)&&(Convert.ToInt32(temp)>=100))
+                    {
+                        MessageBox.Show(temp);
+                        string hexValue = Convert.ToInt32(temp).ToString("X");
+                        str = str.Remove(0, 1).Insert(0, hexValue);
+                        MessageBox.Show(str);
+                       
+                    }
+                    
+
+                }
+               
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Y && stateNew.Gamepad.Buttons == GamepadButtonFlags.Y)  //turn off blade
             {
-                temp = temp.Remove(0, 1).Insert(0, "0");
-                MessageBox.Show(temp);
-                string hexValue = Convert.ToInt32(temp).ToString("X");    //convert to hexvalue
+                //MessageBox.Show(temp);
+                if (temp[0] == '0')    
+                {
+                    MessageBox.Show("The Blade is already off");
+                }
+                
+                if (temp[0] != '0')
+                {
+                    temp = temp.Remove(0, 1).Insert(0, "0");  //000
+                    if (Convert.ToInt32(temp) <= 011)
+                    {
+                        string hexValue = Convert.ToInt32(temp).ToString("X");    //convert t
+                        str = str.Remove(0, 2).Insert(0, "0"+hexValue);    //update packet with hex value 
+                        MessageBox.Show(str);
+                    }
+                    if (Convert.ToInt32(temp) > 011)
+                    {
+                        string hexValue = Convert.ToInt32(temp).ToString("X");    //convert to hexvalue
+                        MessageBox.Show(hexValue);
+                        str = str.Remove(0, 2).Insert(0, hexValue);    //update packet with hex value 
+                        MessageBox.Show(str);
+                    }
+                }
+               /* string hexValue = Convert.ToInt32(temp).ToString("X");    //convert to hexvalue
                 MessageBox.Show(hexValue);
                 str = str.Remove(0, 1).Insert(0, hexValue);    //update packet with hex value 
-                MessageBox.Show(str);
+                MessageBox.Show(str);*/
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Start && stateNew.Gamepad.Buttons == GamepadButtonFlags.Start)
             {
@@ -196,7 +239,7 @@ namespace xbox_3
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
             Connect();
-            Client_Connect();
+            //Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
         }
