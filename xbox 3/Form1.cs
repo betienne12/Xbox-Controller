@@ -41,7 +41,7 @@ namespace xbox_3
             try
             {
                 client = new TcpClient();
-                client.Connect("134.88.129.30", 8001);
+                client.Connect("192.168.1.4", 80);
             }
             catch(Exception e)
             {
@@ -93,7 +93,7 @@ namespace xbox_3
             //buttons controlls
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
             {
-              
+                MessageBox.Show("a pressed");
                 char[] arr = str.ToCharArray();
                 string speed;
                 string bit_1 = (arr[4]).ToString();
@@ -115,7 +115,7 @@ namespace xbox_3
                 arr[6] = speed[0];
                 arr[7] = speed[1];
                 str = new string(arr);
-                //SendPacket(str);
+                SendPacket(str);
                 MessageBox.Show(str);
                
 
@@ -148,7 +148,7 @@ namespace xbox_3
                 arr[6] = speed[0];
                 arr[7] = speed[1];
                 str = new string(arr);
-                //SendPacket(str);
+                SendPacket(str);
                 MessageBox.Show(str);
 
             }
@@ -196,7 +196,7 @@ namespace xbox_3
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
             Connect();
-           // Client_Connect();
+           Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
         }
