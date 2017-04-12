@@ -190,12 +190,13 @@ namespace xbox_3
                 MessageBox.Show("R pressed");
             }
                 this.stateOld = stateNew;
+            //
             
         }
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
             Connect();
-            //Client_Connect();
+            Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
         }
@@ -205,7 +206,7 @@ namespace xbox_3
         }
         private void button3_Click(object sender, EventArgs e) //blade off
         {
-            //SendPacket("hello");
+            SendPacket("hello");
         }
         private void button4_Click(object sender, EventArgs e) //increase speed
         {
