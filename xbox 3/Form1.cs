@@ -168,6 +168,7 @@ namespace xbox_3
                         string hexValue = Convert.ToInt32(temp).ToString("X");
                         str = str.Remove(0, 2).Insert(0, hexValue);
                         MessageBox.Show(str);
+                        //SendPacket(str);
                     }
                     if ((str.Length==5)&&(Convert.ToInt32(temp)>=100))
                     {
@@ -175,9 +176,10 @@ namespace xbox_3
                         string hexValue = Convert.ToInt32(temp).ToString("X");
                         str = str.Remove(0, 1).Insert(0, hexValue);
                         MessageBox.Show(str);
-                       
+                        //SendPacket(str);
+
                     }
-                    
+
 
                 }
                
@@ -198,6 +200,7 @@ namespace xbox_3
                         string hexValue = Convert.ToInt32(temp).ToString("X");    //convert t
                         str = str.Remove(0, 2).Insert(0, "0"+hexValue);    //update packet with hex value 
                         MessageBox.Show(str);
+                        //SendPacket(str);
                     }
                     if (Convert.ToInt32(temp) > 011)
                     {
@@ -205,6 +208,7 @@ namespace xbox_3
                         MessageBox.Show(hexValue);
                         str = str.Remove(0, 2).Insert(0, hexValue);    //update packet with hex value 
                         MessageBox.Show(str);
+                        //SendPacket(str);
                     }
                 }
             
@@ -246,12 +250,14 @@ namespace xbox_3
                         string hexValue = Convert.ToInt32(temp).ToString("X");
                         str = str.Remove(0, 2).Insert(0, hexValue);
                         MessageBox.Show(str);
+                        //SendPacket(str);
                     }
                     if (Convert.ToInt32(temp) == 011)
                     {
                         string hexValue = Convert.ToInt32(temp).ToString("X");
                         str = str.Remove(0, 1).Insert(0, "0"+hexValue);
                         MessageBox.Show(str);
+                        //SendPacket(str);
                     }
                 }
             }
