@@ -25,7 +25,7 @@ namespace xbox_3
         private TcpClient client = null;
         private Stream stm = null;
         private string temp = "000";
-        private string str = "00077F7F"; //inital packet
+        private string str = "77F7F"; //inital packet
         
         
         
@@ -41,7 +41,7 @@ namespace xbox_3
             try
             {
                 client = new TcpClient();
-                client.Connect("192.168.1.4", 80);
+                client.Connect("192.168.4.1", 80);
             }
             catch(Exception e)
             {
@@ -93,7 +93,7 @@ namespace xbox_3
             //buttons controlls
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
             {
-                MessageBox.Show("a pressed");
+               // MessageBox.Show("a pressed");
                 char[] arr = str.ToCharArray();
                 string speed;
                 string bit_1 = (arr[4]).ToString();
@@ -110,10 +110,10 @@ namespace xbox_3
                     int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) + 20;  //increment hex value by 5
                     speed = intFromHex.ToString("X");
                 }
-                arr[4] = speed[0];
-                arr[5] = speed[1];
-                arr[6] = speed[0];
-                arr[7] = speed[1];
+                arr[1] = speed[0];
+                arr[2] = speed[1];
+                arr[3] = speed[0];
+                arr[4] = speed[1];
                 str = new string(arr);
                 SendPacket(str);
                 MessageBox.Show(str);
@@ -143,10 +143,10 @@ namespace xbox_3
                     int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber)-20;  //decrement hex value by 20
                     speed = intFromHex.ToString("X");
                 }
-                arr[4] = speed[0];
-                arr[5] = speed[1];
-                arr[6] = speed[0];
-                arr[7] = speed[1];
+                arr[1] = speed[0];
+                arr[2] = speed[1];
+                arr[3] = speed[0];
+                arr[4] = speed[1];
                 str = new string(arr);
                 SendPacket(str);
                 MessageBox.Show(str);
