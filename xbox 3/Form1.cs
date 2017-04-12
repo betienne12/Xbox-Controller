@@ -207,10 +207,7 @@ namespace xbox_3
                         MessageBox.Show(str);
                     }
                 }
-               /* string hexValue = Convert.ToInt32(temp).ToString("X");    //convert to hexvalue
-                MessageBox.Show(hexValue);
-                str = str.Remove(0, 1).Insert(0, hexValue);    //update packet with hex value 
-                MessageBox.Show(str);*/
+            
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Start && stateNew.Gamepad.Buttons == GamepadButtonFlags.Start)
             {
@@ -218,11 +215,45 @@ namespace xbox_3
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)
             {
+                
                 MessageBox.Show("Down pressed");
+                MessageBox.Show(temp);
+                char[] arr = temp.ToCharArray();
+                arr[1] = '0';   //
+                arr[2] = '0';
+                temp = new string(arr);
+                MessageBox.Show(temp);
+
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)
             {
                 MessageBox.Show("Up pressed");
+                
+                if ((temp[1] == '1') && (temp[2] == '1'))
+                {
+                    MessageBox.Show("LawnMower is already going straight");
+                }
+                else
+                {
+                    char[] arr = temp.ToCharArray();
+                    arr[1] = '1';   //
+                    arr[2] = '1';
+                    temp = new string(arr);
+                    MessageBox.Show(temp);
+                    if (Convert.ToInt32(temp) == 111)
+                    {
+                        
+                        string hexValue = Convert.ToInt32(temp).ToString("X");
+                        str = str.Remove(0, 2).Insert(0, hexValue);
+                        MessageBox.Show(str);
+                    }
+                    if (Convert.ToInt32(temp) == 011)
+                    {
+                        string hexValue = Convert.ToInt32(temp).ToString("X");
+                        str = str.Remove(0, 1).Insert(0, "0"+hexValue);
+                        MessageBox.Show(str);
+                    }
+                }
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)
             {
