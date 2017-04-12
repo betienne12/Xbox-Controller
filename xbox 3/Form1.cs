@@ -25,7 +25,7 @@ namespace xbox_3
         private TcpClient client = null;
         private Stream stm = null;
         private string temp = "000";
-        private string str = "77F7F"; //inital packet
+        private string str = "07F7F"; //inital packet
         
         
         
@@ -154,21 +154,20 @@ namespace xbox_3
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)  //turn on blade
             {
-                /*char[] arr = str.ToCharArray();
-                char[] mask = temp.ToCharArray();
-                mask[0] = Convert.ToChar(100);
-                temp = new string(mask);
+                temp = temp.Remove(0, 1).Insert(0, "1");
                 MessageBox.Show(temp);
-                //char test = Convert.ToChar(temp);
-                //MessageBox.Show(test.ToString());
-                //arr[2] = Convert.ToChar(temp); */
-                // temp.Substring(1, 1) = "h";   
-                str = str.Remove(2, 1).Insert(2, "1");
+                string hexValue = Convert.ToInt32(temp).ToString("X");
+                str = str.Remove(0, 1).Insert(0, hexValue);
                 MessageBox.Show(str);
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Y && stateNew.Gamepad.Buttons == GamepadButtonFlags.Y)  //turn off blade
             {
-                MessageBox.Show("Y pressed");
+                temp = temp.Remove(0, 1).Insert(0, "0");
+                MessageBox.Show(temp);
+                string hexValue = Convert.ToInt32(temp).ToString("X");    //convert to hexvalue
+                MessageBox.Show(hexValue);
+                str = str.Remove(0, 1).Insert(0, hexValue);    //update packet with hex value 
+                MessageBox.Show(str);
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Start && stateNew.Gamepad.Buttons == GamepadButtonFlags.Start)
             {
@@ -196,7 +195,7 @@ namespace xbox_3
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
             Connect();
-           Client_Connect();
+            //Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
         }
