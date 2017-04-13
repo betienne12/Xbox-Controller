@@ -22,7 +22,7 @@ namespace xbox_3
         private State stateOld;
         public bool connected = false;
         private double normalizedLX, normalizedLY;
-        private TcpClient client = null;
+        private UdpClient client = null;
         private Stream stm = null;
         private string temp = "000";
         private string str = "07F7F"; //inital packet
@@ -40,7 +40,7 @@ namespace xbox_3
         {
             try
             {
-                client = new TcpClient();
+                client = new UdpClient();
                 client.Connect("192.168.4.1", 80);
             }
             catch(Exception e)
