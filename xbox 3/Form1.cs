@@ -59,20 +59,12 @@ namespace xbox_3
             Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram,ProtocolType.Udp);
             IPAddress serverAddr = IPAddress.Parse("192.168.4.1");
             IPEndPoint endPoint = new IPEndPoint(serverAddr, 4210);
-            //string text = "Hello";
-            //byte[] send_buffer = Encoding.ASCII.GetBytes(text);
-
-            //sock.SendTo(send_buffer, endPoint);
             string head = "&";
             string tail = "@";
             x = head + x + tail; ;
-            //stm = client.GetStream();
-            //ASCIIEncoding asen = new ASCIIEncoding();
-            //byte[] packet = asen.GetBytes(x);
-            //stm.Write(packet, 0, packet.Length);   //sendd to server
             byte[] packet = Encoding.ASCII.GetBytes(x);
             sock.SendTo(packet, endPoint);
-            //client.Send(packet, packet.Length, "192.168.4.1", 4210);
+            
         }
         public void Connect() //conect controller
         {
