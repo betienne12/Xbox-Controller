@@ -37,24 +37,32 @@ namespace xbox_3
         }   
     
       
-        public void Client_Connect()
+        /*public void Client_Connect()
         {
             try
             {
                 client = new UdpClient();
-
-                IPEndPoint ep = new IPEndPoint(IPAddress.Parse("172.18.18.115"), 8000);
-                client.Connect(ep);
-                    //client.Connect("172.18.18.115", 80);
+                //string p = "hello";
+                //client.Send(p, p.Length, "192.168.4.1", 4210);
+                //IPEndPoint ep = new IPEndPoint(IPAddress.Parse("192.168.4.1"), 4210);
+                //client.Connect(ep);
+                client.Connect("192.168.4.1", 4210);
             }
             catch(Exception e)
             {
                 MessageBox.Show(e.ToString());
             }
-        }
+        }*/
    
         public void SendPacket(string x)
         {
+            Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram,ProtocolType.Udp);
+            IPAddress serverAddr = IPAddress.Parse("192.168.4.1");
+            IPEndPoint endPoint = new IPEndPoint(serverAddr, 4210);
+            //string text = "Hello";
+            //byte[] send_buffer = Encoding.ASCII.GetBytes(text);
+
+            //sock.SendTo(send_buffer, endPoint);
             string head = "&";
             string tail = "@";
             x = head + x + tail; ;
@@ -63,7 +71,8 @@ namespace xbox_3
             //byte[] packet = asen.GetBytes(x);
             //stm.Write(packet, 0, packet.Length);   //sendd to server
             byte[] packet = Encoding.ASCII.GetBytes(x);
-            client.Send(packet, packet.Length);
+            sock.SendTo(packet, endPoint);
+            //client.Send(packet, packet.Length, "192.168.4.1", 4210);
         }
         public void Connect() //conect controller
         {
@@ -102,8 +111,8 @@ namespace xbox_3
                // MessageBox.Show("a pressed");
                 char[] arr = str.ToCharArray();
                 string speed;
-                string bit_1 = (arr[4]).ToString();
-                string bit_2= (arr[5]).ToString();
+                string bit_1 = (arr[1]).ToString();
+                string bit_2= (arr[2]).ToString();
                 string val = bit_1 + bit_2;    //2 bit hex value to be added
                // MessageBox.Show(val);
                 if (val == "F0")   //F0 = 240 last value without going over 255
@@ -174,7 +183,7 @@ namespace xbox_3
                         string hexValue = Convert.ToInt32(temp).ToString("X");
                         str = str.Remove(0, 2).Insert(0, hexValue);
                         MessageBox.Show(str);
-                        //SendPacket(str);
+                        SendPacket(str);
                     }
                     if ((str.Length==5)&&(Convert.ToInt32(temp)>=100))
                     {
@@ -182,7 +191,7 @@ namespace xbox_3
                         string hexValue = Convert.ToInt32(temp).ToString("X");
                         str = str.Remove(0, 1).Insert(0, hexValue);
                         MessageBox.Show(str);
-                        //SendPacket(str);
+                        SendPacket(str);
 
                     }
 
@@ -281,8 +290,8 @@ namespace xbox_3
         }
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
-            //Connect();
-            Client_Connect();
+            Connect();
+            //Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
         }
