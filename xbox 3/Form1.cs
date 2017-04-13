@@ -42,11 +42,14 @@ namespace xbox_3
             try
             {
                 client = new UdpClient();
-                client.Connect("192.168.4.1", 80);
+
+                IPEndPoint ep = new IPEndPoint(IPAddress.Parse("172.18.18.115"), 8000);
+                client.Connect(ep);
+                    //client.Connect("172.18.18.115", 80);
             }
             catch(Exception e)
             {
-                MessageBox.Show("Error.....Can't connect to server");
+                MessageBox.Show(e.ToString());
             }
         }
    
@@ -60,7 +63,7 @@ namespace xbox_3
             //byte[] packet = asen.GetBytes(x);
             //stm.Write(packet, 0, packet.Length);   //sendd to server
             byte[] packet = Encoding.ASCII.GetBytes(x);
-            //UdpClient.(packet, packet.Length);
+            client.Send(packet, packet.Length);
         }
         public void Connect() //conect controller
         {
@@ -278,8 +281,8 @@ namespace xbox_3
         }
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
-            Connect();
-            //Client_Connect();
+            //Connect();
+            Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
         }
