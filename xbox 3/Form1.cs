@@ -35,6 +35,7 @@ namespace xbox_3
             InitializeComponent();
             textBox1.Text = "Controller Settings: \r\nPress X to turn on blade \r\nPress Y to turn off Blade \r\nPress A to increase speed \r\nPress B to decrease speed";
         }   
+    
       
         public void Client_Connect()
         {
@@ -54,10 +55,12 @@ namespace xbox_3
             string head = "&";
             string tail = "@";
             x = head + x + tail; ;
-            stm = client.GetStream();
-            ASCIIEncoding asen = new ASCIIEncoding();
-            byte[] packet = asen.GetBytes(x);
-            stm.Write(packet, 0, packet.Length);   //sendd to server
+            //stm = client.GetStream();
+            //ASCIIEncoding asen = new ASCIIEncoding();
+            //byte[] packet = asen.GetBytes(x);
+            //stm.Write(packet, 0, packet.Length);   //sendd to server
+            byte[] packet = Encoding.ASCII.GetBytes(x);
+            //UdpClient.(packet, packet.Length);
         }
         public void Connect() //conect controller
         {
