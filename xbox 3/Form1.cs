@@ -22,8 +22,8 @@ namespace xbox_3
         private State stateOld;
         public bool connected = false;
         private double normalizedLX, normalizedLY;
-        private UdpClient client = null;
-        private Stream stm = null;
+       // private UdpClient client = null;
+       // private Stream stm = null;
         private string temp = "000";
         private string str = "07F7F"; //inital packet
         
@@ -114,7 +114,7 @@ namespace xbox_3
                 }
                 else
                 {
-                    int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) + 20;  //increment hex value by 5
+                    int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) + 20;  //increment hex value by 20
                     speed = intFromHex.ToString("X");
                 }
                 arr[1] = speed[0];
@@ -132,8 +132,8 @@ namespace xbox_3
             {
                 char[] arr = str.ToCharArray();
                 string speed;
-                string bit_1 = (arr[4]).ToString();
-                string bit_2 = (arr[5]).ToString();
+                string bit_1 = (arr[3]).ToString();
+                string bit_2 = (arr[4]).ToString();
                 string val = bit_1 + bit_2;    //2 bit hex value to be added
                 if (val == "14")
                 {
@@ -171,8 +171,8 @@ namespace xbox_3
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                     MessageBox.Show(binary);
                     str = str.Remove(0, 1).Insert(0, binary);
-                    MessageBox.Show(str);
                     SendPacket(str);
+                    MessageBox.Show(str);
                     //if (Convert.ToInt32(temp) >= 100)
                     /*if ((str.Length != 5) && (Convert.ToInt32(temp) >= 100))
                     {
@@ -212,6 +212,7 @@ namespace xbox_3
                     str = str.Remove(0, 1).Insert(0, binary);
                     MessageBox.Show(str);
                     SendPacket(str);
+
                     /*if (Convert.ToInt32(temp) <= 011)
                     {
                         string hexValue = Convert.ToInt32(temp).ToString("X");    //convert t
@@ -296,7 +297,7 @@ namespace xbox_3
             {
                 if ((temp[1] == '0') && (temp[2] == '1'))   //assuming dir1 is left
                 {
-                    MessageBox.Show("LawnMower is already going straight");
+                    MessageBox.Show("LawnMower is turning left");
                 }
                 else
                 {
@@ -308,14 +309,30 @@ namespace xbox_3
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                     MessageBox.Show(binary);
                     str = str.Remove(0, 1).Insert(0, binary);
-                    MessageBox.Show(str);
                     SendPacket(str);
+                    MessageBox.Show(str);
                 }
             }
-                if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
+            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
+            {
+                if ((temp[1] == '1') && (temp[2] == '0'))   //assuming dir2 is right
                 {
-                    MessageBox.Show("R pressed");
+                    MessageBox.Show("LawnMower is turning right");
                 }
+                else
+                {
+                    char[] arr = temp.ToCharArray();
+                    arr[1] = '1';   //assuming one is forward
+                    arr[2] = '0';  //assuming is backward
+                    temp = new string(arr);
+                    MessageBox.Show(temp);
+                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                    MessageBox.Show(binary);
+                    str = str.Remove(0, 1).Insert(0, binary);
+                    SendPacket(str);
+                    MessageBox.Show(str);
+                }
+            }
                 this.stateOld = stateNew;
                 //
             }
@@ -330,19 +347,93 @@ namespace xbox_3
         }
         private void button2_Click(object sender, EventArgs e) //blade on button
         {
-            SendPacket("hello");
+            if (temp[0] == '1')
+            {
+                MessageBox.Show("The Blade is already on");
+            }
+            if (temp[0] != '1')
+            {
+                temp = temp.Remove(0, 1).Insert(0, "1");  //100
+                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                MessageBox.Show(binary);
+                str = str.Remove(0, 1).Insert(0, binary);
+                SendPacket(str);
+                MessageBox.Show(str);
+            }
         }
         private void button3_Click(object sender, EventArgs e) //blade off
         {
-            SendPacket("hello");
+            //MessageBox.Show(temp);
+            if (temp[0] == '0')
+            {
+                MessageBox.Show("The Blade is already off");
+            }
+
+            if (temp[0] != '0')
+            {
+                temp = temp.Remove(0, 1).Insert(0, "0");  //000
+                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                MessageBox.Show(binary);
+                str = str.Remove(0, 1).Insert(0, binary);
+                SendPacket(str);
+                MessageBox.Show(str);
+            }
         }
         private void button4_Click(object sender, EventArgs e) //increase speed
         {
-            //SendPacket("hello");
+            char[] arr = str.ToCharArray();
+            string speed;
+            string bit_1 = (arr[1]).ToString();
+            string bit_2 = (arr[2]).ToString();
+            string val = bit_1 + bit_2;    //2 bit hex value to be added
+                                           // MessageBox.Show(val);
+            if (val == "F0")   //F0 = 240 last value without going over 255
+            {
+                speed = "FF";
+                MessageBox.Show("Max speed has been reached");
+            }
+            else
+            {
+                int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) + 20;  //increment hex value by 20
+                speed = intFromHex.ToString("X");
+            }
+            arr[1] = speed[0];
+            arr[2] = speed[1];
+            arr[3] = speed[0];
+            arr[4] = speed[1];
+            str = new string(arr);
+            SendPacket(str);
+            MessageBox.Show(str);
         }
         private void button5_Click(object sender, EventArgs e)  //decrease sppeed
         {
-            //SendPacket("hello");
+            char[] arr = str.ToCharArray();
+            string speed;
+            string bit_1 = (arr[3]).ToString();
+            string bit_2 = (arr[4]).ToString();
+            string val = bit_1 + bit_2;    //2 bit hex value to be added
+            if (val == "14")
+            {
+                speed = "00";
+                MessageBox.Show("Lowest speed has been reached");
+            }
+            if (val == "00")
+            {
+                speed = "00";
+                MessageBox.Show("Lowest speed has been reached");
+            }
+            else
+            {
+                int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) - 20;  //decrement hex value by 20
+                speed = intFromHex.ToString("X");
+            }
+            arr[1] = speed[0];
+            arr[2] = speed[1];
+            arr[3] = speed[0];
+            arr[4] = speed[1];
+            str = new string(arr);
+            SendPacket(str);
+            MessageBox.Show(str);
         }
         private void timer2_Tick(object sender, EventArgs e)  //timer for joystick updating
         {
@@ -350,11 +441,7 @@ namespace xbox_3
            // Joystick();
         }
 
-        private void button2_Click_1(object sender, EventArgs e)   //disconnect button
-        {
-            stm.Close();
-            client.Close();
-        }
+      
 
         private void timer1_Tick(object sender, EventArgs e)
         {
