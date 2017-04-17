@@ -95,18 +95,18 @@ namespace xbox_3
         }
         void GetInput()
         {
-            
-            State stateNew = controller.GetState(); 
+
+            State stateNew = controller.GetState();
             //buttons controlls
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
             {
-               // MessageBox.Show("a pressed");
+                // MessageBox.Show("a pressed");
                 char[] arr = str.ToCharArray();
                 string speed;
                 string bit_1 = (arr[1]).ToString();
-                string bit_2= (arr[2]).ToString();
+                string bit_2 = (arr[2]).ToString();
                 string val = bit_1 + bit_2;    //2 bit hex value to be added
-               // MessageBox.Show(val);
+                                               // MessageBox.Show(val);
                 if (val == "F0")   //F0 = 240 last value without going over 255
                 {
                     speed = "FF";
@@ -124,10 +124,10 @@ namespace xbox_3
                 str = new string(arr);
                 SendPacket(str);
                 MessageBox.Show(str);
-               
+
 
             }
-             
+
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.B && stateNew.Gamepad.Buttons == GamepadButtonFlags.B)  //decrease speed
             {
                 char[] arr = str.ToCharArray();
@@ -136,18 +136,18 @@ namespace xbox_3
                 string bit_2 = (arr[5]).ToString();
                 string val = bit_1 + bit_2;    //2 bit hex value to be added
                 if (val == "14")
-                 {
-                     speed = "00";
+                {
+                    speed = "00";
                     MessageBox.Show("Lowest speed has been reached");
                 }
-                if(val == "00")
+                if (val == "00")
                 {
                     speed = "00";
                     MessageBox.Show("Lowest speed has been reached");
                 }
                 else
                 {
-                    int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber)-20;  //decrement hex value by 20
+                    int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) - 20;  //decrement hex value by 20
                     speed = intFromHex.ToString("X");
                 }
                 arr[1] = speed[0];
@@ -168,16 +168,21 @@ namespace xbox_3
                 if (temp[0] != '1')
                 {
                     temp = temp.Remove(0, 1).Insert(0, "1");  //100
+                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                    MessageBox.Show(binary);
+                    str = str.Remove(0, 1).Insert(0, binary);
+                    MessageBox.Show(str);
+                    SendPacket(str);
                     //if (Convert.ToInt32(temp) >= 100)
-                    if ((str.Length != 5) && (Convert.ToInt32(temp) >= 100))
+                    /*if ((str.Length != 5) && (Convert.ToInt32(temp) >= 100))
                     {
                         MessageBox.Show(temp);
                         string hexValue = Convert.ToInt32(temp).ToString("X");
                         str = str.Remove(0, 2).Insert(0, hexValue);
                         MessageBox.Show(str);
                         SendPacket(str);
-                    }
-                    if ((str.Length==5)&&(Convert.ToInt32(temp)>=100))
+                    }*/
+                    /*if ((str.Length==5)&&(Convert.ToInt32(temp)>=100))
                     {
                         MessageBox.Show(temp);
                         string hexValue = Convert.ToInt32(temp).ToString("X");
@@ -186,23 +191,28 @@ namespace xbox_3
                         SendPacket(str);
 
                     }
-
+                    */
 
                 }
-               
+
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Y && stateNew.Gamepad.Buttons == GamepadButtonFlags.Y)  //turn off blade
             {
                 //MessageBox.Show(temp);
-                if (temp[0] == '0')    
+                if (temp[0] == '0')
                 {
                     MessageBox.Show("The Blade is already off");
                 }
-                
+
                 if (temp[0] != '0')
                 {
                     temp = temp.Remove(0, 1).Insert(0, "0");  //000
-                    if (Convert.ToInt32(temp) <= 011)
+                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                    MessageBox.Show(binary);
+                    str = str.Remove(0, 1).Insert(0, binary);
+                    MessageBox.Show(str);
+                    SendPacket(str);
+                    /*if (Convert.ToInt32(temp) <= 011)
                     {
                         string hexValue = Convert.ToInt32(temp).ToString("X");    //convert t
                         str = str.Remove(0, 2).Insert(0, "0"+hexValue);    //update packet with hex value 
@@ -216,9 +226,9 @@ namespace xbox_3
                         str = str.Remove(0, 2).Insert(0, hexValue);    //update packet with hex value 
                         MessageBox.Show(str);
                         //SendPacket(str);
-                    }
+                    }*/
                 }
-            
+
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Start && stateNew.Gamepad.Buttons == GamepadButtonFlags.Start)
             {
@@ -226,60 +236,91 @@ namespace xbox_3
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)
             {
-                
-                MessageBox.Show("Down pressed");
-                MessageBox.Show(temp);
-                char[] arr = temp.ToCharArray();
-                arr[1] = '0';   //
-                arr[2] = '0';
-                temp = new string(arr);
-                MessageBox.Show(temp);
 
+                if ((temp[1] == '0') && (temp[2] == '0'))
+                {
+                    MessageBox.Show("LawnMower is already going backwards");
+                }
+                else
+                {
+                    char[] arr = temp.ToCharArray();
+                    arr[1] = '0';   //assuming 0 is backwards
+                    arr[2] = '0';
+                    temp = new string(arr);
+                    MessageBox.Show(temp);
+                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                    MessageBox.Show(binary);
+                    str = str.Remove(0, 1).Insert(0, binary);
+                    MessageBox.Show(str);
+                    SendPacket(str);
+
+                }
             }
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)
+                if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)
+                {
+
+                    if ((temp[1] == '1') && (temp[2] == '1'))
+                    {
+                        MessageBox.Show("LawnMower is already going straight");
+                    }
+                    else
+                    {
+                        char[] arr = temp.ToCharArray();
+                        arr[1] = '1';   //assuming one is forward
+                        arr[2] = '1';
+                        temp = new string(arr);
+                        MessageBox.Show(temp);
+                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                        MessageBox.Show(binary);
+                        str = str.Remove(0, 1).Insert(0, binary);
+                        MessageBox.Show(str);
+                        SendPacket(str);
+                        /*if (Convert.ToInt32(temp) == 111)
+                        {
+
+                            string hexValue = Convert.ToInt32(temp).ToString("X");
+                            str = str.Remove(0, 2).Insert(0, hexValue);
+                            MessageBox.Show(str);
+                            //SendPacket(str);
+                        }
+                        if (Convert.ToInt32(temp) == 011)
+                        {
+                            string hexValue = Convert.ToInt32(temp).ToString("X");
+                            str = str.Remove(0, 1).Insert(0, "0"+hexValue);
+                            MessageBox.Show(str);
+                            //SendPacket(str);
+                        }*/
+                    }
+                }
+            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)
             {
-                MessageBox.Show("Up pressed");
-                
-                if ((temp[1] == '1') && (temp[2] == '1'))
+                if ((temp[1] == '0') && (temp[2] == '1'))   //assuming dir1 is left
                 {
                     MessageBox.Show("LawnMower is already going straight");
                 }
                 else
                 {
                     char[] arr = temp.ToCharArray();
-                    arr[1] = '1';   //
+                    arr[1] = '0';   //assuming one is forward
                     arr[2] = '1';
                     temp = new string(arr);
                     MessageBox.Show(temp);
-                    if (Convert.ToInt32(temp) == 111)
-                    {
-                        
-                        string hexValue = Convert.ToInt32(temp).ToString("X");
-                        str = str.Remove(0, 2).Insert(0, hexValue);
-                        MessageBox.Show(str);
-                        //SendPacket(str);
-                    }
-                    if (Convert.ToInt32(temp) == 011)
-                    {
-                        string hexValue = Convert.ToInt32(temp).ToString("X");
-                        str = str.Remove(0, 1).Insert(0, "0"+hexValue);
-                        MessageBox.Show(str);
-                        //SendPacket(str);
-                    }
+                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                    MessageBox.Show(binary);
+                    str = str.Remove(0, 1).Insert(0, binary);
+                    MessageBox.Show(str);
+                    SendPacket(str);
                 }
             }
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)
-            {
-                MessageBox.Show("L pressed");
-            }
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
-            {
-                MessageBox.Show("R pressed");
-            }
+                if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
+                {
+                    MessageBox.Show("R pressed");
+                }
                 this.stateOld = stateNew;
-            //
-            
-        }
+                //
+            }
+        
+        
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
             Connect();
