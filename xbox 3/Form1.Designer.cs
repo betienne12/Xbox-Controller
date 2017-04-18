@@ -34,11 +34,10 @@
             this.blade_on = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // timer1
@@ -48,7 +47,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1, 69);
+            this.button1.Location = new System.Drawing.Point(1, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(281, 56);
             this.button1.TabIndex = 0;
@@ -58,7 +57,7 @@
             // 
             // blade_on
             // 
-            this.blade_on.Location = new System.Drawing.Point(1, 131);
+            this.blade_on.Location = new System.Drawing.Point(1, 74);
             this.blade_on.Name = "blade_on";
             this.blade_on.Size = new System.Drawing.Size(112, 57);
             this.blade_on.TabIndex = 1;
@@ -68,7 +67,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(1, 194);
+            this.button3.Location = new System.Drawing.Point(1, 147);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(112, 57);
             this.button3.TabIndex = 2;
@@ -85,26 +84,9 @@
             this.textBox1.Size = new System.Drawing.Size(213, 85);
             this.textBox1.TabIndex = 3;
             // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(167, 27);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(115, 20);
-            this.textBox2.TabIndex = 4;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(63, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 18);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Speed";
-            // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(167, 131);
+            this.button4.Location = new System.Drawing.Point(167, 74);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(115, 57);
             this.button4.TabIndex = 6;
@@ -114,7 +96,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(167, 194);
+            this.button5.Location = new System.Drawing.Point(167, 147);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(115, 57);
             this.button5.TabIndex = 7;
@@ -127,15 +109,25 @@
             this.timer2.Interval = 8000;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Red;
+            this.button2.Location = new System.Drawing.Point(12, 210);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(260, 57);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "Stop";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 398);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.blade_on);
@@ -154,11 +146,10 @@
         private System.Windows.Forms.Button blade_on;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Button button2;
     }
 }
 

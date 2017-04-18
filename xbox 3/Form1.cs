@@ -340,7 +340,7 @@ namespace xbox_3
         
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
-            Connect();
+           // Connect();
             //Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
@@ -441,7 +441,18 @@ namespace xbox_3
            // Joystick();
         }
 
-      
+        private void button2_Click_1(object sender, EventArgs e)  //stop button
+        {
+            char[] arr = str.ToCharArray();
+            arr[1] = '0';
+            arr[1] = '0';
+            arr[2] = '0';
+            arr[3] = '0';
+            arr[4] = '0';
+            str = new string(arr);
+            SendPacket(str);
+            MessageBox.Show(str);
+        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
