@@ -38,6 +38,7 @@
             this.button5 = new System.Windows.Forms.Button();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.button2 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // timer1
@@ -47,9 +48,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(1, 12);
+            this.button1.Location = new System.Drawing.Point(13, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(281, 56);
+            this.button1.Size = new System.Drawing.Size(259, 56);
             this.button1.TabIndex = 0;
             this.button1.Text = "Connect Controller";
             this.button1.UseVisualStyleBackColor = true;
@@ -57,7 +58,7 @@
             // 
             // blade_on
             // 
-            this.blade_on.Location = new System.Drawing.Point(1, 74);
+            this.blade_on.Location = new System.Drawing.Point(12, 123);
             this.blade_on.Name = "blade_on";
             this.blade_on.Size = new System.Drawing.Size(112, 57);
             this.blade_on.TabIndex = 1;
@@ -67,7 +68,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(1, 147);
+            this.button3.Location = new System.Drawing.Point(12, 186);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(112, 57);
             this.button3.TabIndex = 2;
@@ -77,16 +78,18 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(39, 312);
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(12, 312);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(213, 85);
+            this.textBox1.Size = new System.Drawing.Size(260, 85);
             this.textBox1.TabIndex = 3;
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(167, 74);
+            this.button4.Location = new System.Drawing.Point(146, 123);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(115, 57);
             this.button4.TabIndex = 6;
@@ -96,7 +99,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(167, 147);
+            this.button5.Location = new System.Drawing.Point(146, 186);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(115, 57);
             this.button5.TabIndex = 7;
@@ -112,7 +115,7 @@
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Red;
-            this.button2.Location = new System.Drawing.Point(12, 210);
+            this.button2.Location = new System.Drawing.Point(12, 249);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(260, 57);
             this.button2.TabIndex = 8;
@@ -120,11 +123,23 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button6.Location = new System.Drawing.Point(12, 64);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(260, 56);
+            this.button6.TabIndex = 9;
+            this.button6.Text = "Start ";
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 398);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
@@ -150,6 +165,7 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button6;
     }
 }
 

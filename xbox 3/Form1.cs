@@ -25,7 +25,7 @@ namespace xbox_3
        // private UdpClient client = null;
        // private Stream stm = null;
         private string temp = "000";
-        private string str = "07F7F"; //inital packet
+        private string str = "87F7F"; //inital packet
         
         
         
@@ -33,7 +33,7 @@ namespace xbox_3
         public Form1()
         {
             InitializeComponent();
-            textBox1.Text = "Controller Settings: \r\nPress X to turn on blade \r\nPress Y to turn off Blade \r\nPress A to increase speed \r\nPress B to decrease speed";
+            textBox1.Text = "Controller Settings: \r\nPress Start Button to start the lawnmower \r\nPress X to turn on blade \r\nPress Y to turn off Blade \r\nPress A to increase speed \r\nPress B to decrease speed";
         }   
     
       
@@ -173,32 +173,11 @@ namespace xbox_3
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
                     MessageBox.Show(str);
-                    //if (Convert.ToInt32(temp) >= 100)
-                    /*if ((str.Length != 5) && (Convert.ToInt32(temp) >= 100))
-                    {
-                        MessageBox.Show(temp);
-                        string hexValue = Convert.ToInt32(temp).ToString("X");
-                        str = str.Remove(0, 2).Insert(0, hexValue);
-                        MessageBox.Show(str);
-                        SendPacket(str);
-                    }*/
-                    /*if ((str.Length==5)&&(Convert.ToInt32(temp)>=100))
-                    {
-                        MessageBox.Show(temp);
-                        string hexValue = Convert.ToInt32(temp).ToString("X");
-                        str = str.Remove(0, 1).Insert(0, hexValue);
-                        MessageBox.Show(str);
-                        SendPacket(str);
-
-                    }
-                    */
-
                 }
 
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Y && stateNew.Gamepad.Buttons == GamepadButtonFlags.Y)  //turn off blade
             {
-                //MessageBox.Show(temp);
                 if (temp[0] == '0')
                 {
                     MessageBox.Show("The Blade is already off");
@@ -208,32 +187,16 @@ namespace xbox_3
                 {
                     temp = temp.Remove(0, 1).Insert(0, "0");  //000
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    MessageBox.Show(binary);
                     str = str.Remove(0, 1).Insert(0, binary);
-                    MessageBox.Show(str);
                     SendPacket(str);
-
-                    /*if (Convert.ToInt32(temp) <= 011)
-                    {
-                        string hexValue = Convert.ToInt32(temp).ToString("X");    //convert t
-                        str = str.Remove(0, 2).Insert(0, "0"+hexValue);    //update packet with hex value 
-                        MessageBox.Show(str);
-                        //SendPacket(str);
-                    }
-                    if (Convert.ToInt32(temp) > 011)
-                    {
-                        string hexValue = Convert.ToInt32(temp).ToString("X");    //convert to hexvalue
-                        MessageBox.Show(hexValue);
-                        str = str.Remove(0, 2).Insert(0, hexValue);    //update packet with hex value 
-                        MessageBox.Show(str);
-                        //SendPacket(str);
-                    }*/
+                    MessageBox.Show(str);
                 }
 
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Start && stateNew.Gamepad.Buttons == GamepadButtonFlags.Start)
             {
-                MessageBox.Show("Start pressed");
+                SendPacket(str);
+                MessageBox.Show(str);
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)
             {
@@ -248,12 +211,10 @@ namespace xbox_3
                     arr[1] = '0';   //assuming 0 is backwards
                     arr[2] = '0';
                     temp = new string(arr);
-                    MessageBox.Show(temp);
-                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    MessageBox.Show(binary);
+                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);  
                     str = str.Remove(0, 1).Insert(0, binary);
-                    MessageBox.Show(str);
                     SendPacket(str);
+                    MessageBox.Show(str);
 
                 }
             }
@@ -270,27 +231,11 @@ namespace xbox_3
                         arr[1] = '1';   //assuming one is forward
                         arr[2] = '1';
                         temp = new string(arr);
-                        MessageBox.Show(temp);
                         String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                        MessageBox.Show(binary);
                         str = str.Remove(0, 1).Insert(0, binary);
-                        MessageBox.Show(str);
                         SendPacket(str);
-                        /*if (Convert.ToInt32(temp) == 111)
-                        {
+                        MessageBox.Show(str);
 
-                            string hexValue = Convert.ToInt32(temp).ToString("X");
-                            str = str.Remove(0, 2).Insert(0, hexValue);
-                            MessageBox.Show(str);
-                            //SendPacket(str);
-                        }
-                        if (Convert.ToInt32(temp) == 011)
-                        {
-                            string hexValue = Convert.ToInt32(temp).ToString("X");
-                            str = str.Remove(0, 1).Insert(0, "0"+hexValue);
-                            MessageBox.Show(str);
-                            //SendPacket(str);
-                        }*/
                     }
                 }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)
@@ -305,9 +250,7 @@ namespace xbox_3
                     arr[1] = '0';   //assuming one is forward
                     arr[2] = '1';
                     temp = new string(arr);
-                    MessageBox.Show(temp);
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    MessageBox.Show(binary);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
                     MessageBox.Show(str);
@@ -325,22 +268,19 @@ namespace xbox_3
                     arr[1] = '1';   //assuming one is forward
                     arr[2] = '0';  //assuming is backward
                     temp = new string(arr);
-                    MessageBox.Show(temp);
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    MessageBox.Show(binary);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
                     MessageBox.Show(str);
                 }
             }
                 this.stateOld = stateNew;
-                //
             }
         
         
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
-           // Connect();
+            Connect();
             //Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
@@ -355,7 +295,6 @@ namespace xbox_3
             {
                 temp = temp.Remove(0, 1).Insert(0, "1");  //100
                 String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                MessageBox.Show(binary);
                 str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
                 MessageBox.Show(str);
@@ -373,7 +312,6 @@ namespace xbox_3
             {
                 temp = temp.Remove(0, 1).Insert(0, "0");  //000
                 String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                MessageBox.Show(binary);
                 str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
                 MessageBox.Show(str);
@@ -444,12 +382,18 @@ namespace xbox_3
         private void button2_Click_1(object sender, EventArgs e)  //stop button
         {
             char[] arr = str.ToCharArray();
-            arr[1] = '0';
+            arr[0] = '0';
             arr[1] = '0';
             arr[2] = '0';
             arr[3] = '0';
             arr[4] = '0';
             str = new string(arr);
+            SendPacket(str);
+            MessageBox.Show(str);
+        }
+
+        private void button6_Click(object sender, EventArgs e)  //start button
+        {
             SendPacket(str);
             MessageBox.Show(str);
         }
