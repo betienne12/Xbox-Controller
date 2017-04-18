@@ -135,7 +135,13 @@ namespace xbox_3
                 string bit_1 = (arr[1]).ToString();
                 string bit_2 = (arr[2]).ToString();
                 string val = bit_1 + bit_2;    //2 bit hex value to be added
-                if (val == "1B")
+                string dec = Convert.ToString(Convert.ToInt32(val, 16), 10);
+                if (Convert.ToInt32(dec) < 36)
+                {
+                    speed = "00";
+                    MessageBox.Show("Lowest speed has been reached");
+                }
+                /*if (val == "1B")
                 {
                     speed = "00";
                     MessageBox.Show("Lowest speed has been reached");
@@ -149,7 +155,7 @@ namespace xbox_3
                 {
                     speed = "00";
                     MessageBox.Show("Lowest speed has been reached");
-                }
+                }*/
                 else
                 {
                     int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) - 20;  //decrement hex value by 20
@@ -315,7 +321,7 @@ namespace xbox_3
             if (temp[0] != '0')
             {
                 temp = temp.Remove(0, 1).Insert(0, "0");  //000
-                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);  //convert to decimal
                 str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
                 MessageBox.Show(str);
@@ -354,7 +360,13 @@ namespace xbox_3
             string bit_1 = (arr[1]).ToString();
             string bit_2 = (arr[2]).ToString();
             string val = bit_1 + bit_2;    //2 bit hex value to be added
-            if (val == "1B")
+            string dec = Convert.ToString(Convert.ToInt32(val, 16), 10);
+            if(Convert.ToInt32(dec)<36)
+            {
+                speed = "00";
+                MessageBox.Show("Lowest speed has been reached");
+            }
+            /*if (val == "1B")
             {
                 speed = "00";
                 MessageBox.Show("Lowest speed has been reached");
@@ -368,7 +380,7 @@ namespace xbox_3
             {
                 speed = "00";
                 MessageBox.Show("Lowest speed has been reached");
-            }
+            }*/
             else
             {
                 int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) - 20;  //decrement hex value by 20
