@@ -25,7 +25,7 @@ namespace xbox_3
        // private UdpClient client = null;
        // private Stream stm = null;
         private string temp = "000";
-        private string str = "87F7F"; //inital packet 7F
+        private string str = "77F7F"; //inital packet 7F
         
         
         
@@ -179,7 +179,7 @@ namespace xbox_3
                 {
                     temp = temp.Remove(0, 1).Insert(0, "1");  //100
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    MessageBox.Show(binary);
+                    //MessageBox.Show(binary);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
                     MessageBox.Show(str);
@@ -205,6 +205,19 @@ namespace xbox_3
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Start && stateNew.Gamepad.Buttons == GamepadButtonFlags.Start)
             {
+                char[] arr = temp.ToCharArray();
+                arr[0] = '1';
+                arr[1] = '1';   //assuming 0 is backwards
+                arr[2] = '1';
+                temp = new string(arr);
+                char[] packet = str.ToCharArray();
+                packet[1] = '7';
+                packet[2] = 'F';
+                packet[3] = '7';
+                packet[4] = 'F';
+                str = new string(packet);
+                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
                 MessageBox.Show(str);
             }
@@ -415,6 +428,19 @@ namespace xbox_3
 
         private void button6_Click(object sender, EventArgs e)  //start button
         {
+            char[] arr = temp.ToCharArray();
+            arr[0] = '1';
+            arr[1] = '1';   //assuming 0 is backwards
+            arr[2] = '1';
+            temp = new string(arr);
+            char[] packet = str.ToCharArray();
+            packet[1] = '7';
+            packet[2] = 'F';
+            packet[3] = '7';
+            packet[4] = 'F';
+            str = new string(packet);
+            String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+            str = str.Remove(0, 1).Insert(0, binary);
             SendPacket(str);
             MessageBox.Show(str);
         }
