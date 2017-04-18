@@ -25,7 +25,7 @@ namespace xbox_3
        // private UdpClient client = null;
        // private Stream stm = null;
         private string temp = "000";
-        private string str = "87F7F"; //inital packet
+        private string str = "87F7F"; //inital packet 7F
         
         
         
@@ -132,15 +132,20 @@ namespace xbox_3
             {
                 char[] arr = str.ToCharArray();
                 string speed;
-                string bit_1 = (arr[3]).ToString();
-                string bit_2 = (arr[4]).ToString();
+                string bit_1 = (arr[1]).ToString();
+                string bit_2 = (arr[2]).ToString();
                 string val = bit_1 + bit_2;    //2 bit hex value to be added
+                if (val == "1B")
+                {
+                    speed = "00";
+                    MessageBox.Show("Lowest speed has been reached");
+                }
                 if (val == "14")
                 {
                     speed = "00";
                     MessageBox.Show("Lowest speed has been reached");
                 }
-                if (val == "00")
+                else if (val == "00")
                 {
                     speed = "00";
                     MessageBox.Show("Lowest speed has been reached");
@@ -157,7 +162,6 @@ namespace xbox_3
                 str = new string(arr);
                 SendPacket(str);
                 MessageBox.Show(str);
-
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)  //turn on blade
             {
@@ -347,15 +351,20 @@ namespace xbox_3
         {
             char[] arr = str.ToCharArray();
             string speed;
-            string bit_1 = (arr[3]).ToString();
-            string bit_2 = (arr[4]).ToString();
+            string bit_1 = (arr[1]).ToString();
+            string bit_2 = (arr[2]).ToString();
             string val = bit_1 + bit_2;    //2 bit hex value to be added
+            if (val == "1B")
+            {
+                speed = "00";
+                MessageBox.Show("Lowest speed has been reached");
+            }
             if (val == "14")
             {
                 speed = "00";
                 MessageBox.Show("Lowest speed has been reached");
             }
-            if (val == "00")
+            else if (val == "00")
             {
                 speed = "00";
                 MessageBox.Show("Lowest speed has been reached");
