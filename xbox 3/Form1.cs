@@ -25,7 +25,7 @@ namespace xbox_3
        // private UdpClient client = null;
        // private Stream stm = null;
         private string temp = "000";
-        private string str = "77F7F"; //inital packet 7F
+        private string str = "71919"; //inital packet 7F
         
         
         
@@ -211,10 +211,10 @@ namespace xbox_3
                 arr[2] = '1';
                 temp = new string(arr);
                 char[] packet = str.ToCharArray();
-                packet[1] = '7';
-                packet[2] = 'F';
-                packet[3] = '7';
-                packet[4] = 'F';
+                packet[1] = '1';
+                packet[2] = '9';
+                packet[3] = '1';
+                packet[4] = '9';
                 str = new string(packet);
                 String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                 str = str.Remove(0, 1).Insert(0, binary);
@@ -434,10 +434,10 @@ namespace xbox_3
             arr[2] = '1';
             temp = new string(arr);
             char[] packet = str.ToCharArray();
-            packet[1] = '7';
-            packet[2] = 'F';
-            packet[3] = '7';
-            packet[4] = 'F';
+            packet[1] = '1';
+            packet[2] = '9';
+            packet[3] = '1';
+            packet[4] = '9';
             str = new string(packet);
             String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
             str = str.Remove(0, 1).Insert(0, binary);
