@@ -24,3 +24,4 @@ C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controll
 C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox_3.Form1.resources
 C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox_3.Properties.Resources.resources
 C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\obj\Debug\xbox 3.csproj.GenerateResource.Cache
+C:\Users\Brian\Documents\Visual Studio 2015\Projects\Senior Design\Xbox-Controller\xbox 3\bin\Debug\ManagedWifi.dll

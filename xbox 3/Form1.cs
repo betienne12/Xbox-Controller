@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SharpDX;
 using SharpDX.XInput;
+using NativeWifi;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Collections.ObjectModel;
 
 namespace xbox_3
 {
@@ -33,27 +37,28 @@ namespace xbox_3
         public Form1()
         {
             InitializeComponent();
+            Wifi(); //put in timer
             textBox1.Text = "Controller Settings: \r\nPress Start Button to start the lawnmower \r\nPress X to turn on blade \r\nPress Y to turn off Blade \r\nPress A to increase speed \r\nPress B to decrease speed";
-        }   
-    
-      
-        /*public void Client_Connect()
+        }
+
+       public void Wifi()
         {
-            try
+            WlanClient wlan = new WlanClient();
+            Collection<String> connectedSsids = new Collection<string>();
+
+            foreach (WlanClient.WlanInterface wlanInterface in wlan.Interfaces)
             {
-                client = new UdpClient();
-                //string p = "hello";
-                //client.Send(p, p.Length, "192.168.4.1", 4210);
-                //IPEndPoint ep = new IPEndPoint(IPAddress.Parse("192.168.4.1"), 4210);
-                //client.Connect(ep);
-                client.Connect("192.168.4.1", 4210);
+                Wlan.Dot11Ssid ssid = wlanInterface.CurrentConnection.wlanAssociationAttributes.dot11Ssid;
+                connectedSsids.Add(new String(Encoding.ASCII.GetChars(ssid.SSID, 0, (int)ssid.SSIDLength)));
             }
-            catch(Exception e)
+            foreach( string x in connectedSsids)
             {
-                MessageBox.Show(e.ToString());
+                MessageBox.Show(x);
             }
-        }*/
-   
+        }
+
+
+
         public void SendPacket(string x)
         {
             Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram,ProtocolType.Udp);
@@ -141,21 +146,8 @@ namespace xbox_3
                     speed = "00";
                     MessageBox.Show("Lowest speed has been reached");
                 }
-                /*if (val == "1B")
-                {
-                    speed = "00";
-                    MessageBox.Show("Lowest speed has been reached");
-                }
-                if (val == "14")
-                {
-                    speed = "00";
-                    MessageBox.Show("Lowest speed has been reached");
-                }
-                else if (val == "00")
-                {
-                    speed = "00";
-                    MessageBox.Show("Lowest speed has been reached");
-                }*/
+                
+               
                 else
                 {
                     int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) - 20;  //decrement hex value by 20
@@ -379,21 +371,7 @@ namespace xbox_3
                 speed = "00";
                 MessageBox.Show("Lowest speed has been reached");
             }
-            /*if (val == "1B")
-            {
-                speed = "00";
-                MessageBox.Show("Lowest speed has been reached");
-            }
-            if (val == "14")
-            {
-                speed = "00";
-                MessageBox.Show("Lowest speed has been reached");
-            }
-            else if (val == "00")
-            {
-                speed = "00";
-                MessageBox.Show("Lowest speed has been reached");
-            }*/
+            
             else
             {
                 int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) - 20;  //decrement hex value by 20
