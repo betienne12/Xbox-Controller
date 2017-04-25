@@ -28,8 +28,6 @@ namespace xbox_3
         private State stateOld;
         public bool connected = false;
         private double normalizedLX, normalizedLY;
-       // private UdpClient client = null;
-       // private Stream stm = null;
         private string temp = "000";
         private string str = "71919"; //inital packet 19
         
@@ -40,29 +38,29 @@ namespace xbox_3
         {
             InitializeComponent();
             timer3.Enabled = true;
-            textBox1.Text = "Controller Settings: \r\nPress Start Button to start the lawnmower \r\nPress X to turn on blade \r\nPress Y to turn off Blade \r\nPress A to increase speed \r\nPress B to decrease speed";
+            textBox3.Text = "Press Start to start the lawnmower  \r\nPress Right button to stop the lawnmower  \r\nPress X to turn on blade \r\nPress Y to turn off Blade \r\nPress A to increase speed \r\nPress B to decrease speed";
+            textBox1.Text = "Controller Settings:";
         }
 
-       public void Wifi()   //check if connected to lawnmower if not stop mower
+        public void Wifi()   //check if connected to lawnmower if not stop mower
         {
-            
 
-    
-            
-        WlanClient wlan = new WlanClient();
-        Collection<String> connectedSsids = new Collection<string>();
-        string network = "UMASSD-A";
-        bool Connection = NetworkInterface.GetIsNetworkAvailable();
-        if (Connection == true)
-            { 
-                
-                foreach (WlanClient.WlanInterface wlanInterface in wlan.Interfaces)
+            WlanClient wlan = new WlanClient();
+            Collection<String> connectedSsids = new Collection<string>();
+            string network = "UMASSD-A";
+            bool Connection = NetworkInterface.GetIsNetworkAvailable();
+            try
+            {
+                if (Connection == true)
                 {
-                    string o;
-                    Wlan.Dot11Ssid ssid = wlanInterface.CurrentConnection.wlanAssociationAttributes.dot11Ssid;
-                    connectedSsids.Add("garbage");
-                    connectedSsids.Add(new String(Encoding.ASCII.GetChars(ssid.SSID, 0, (int)ssid.SSIDLength)));
-                    if (!((connectedSsids.Contains("garbage")) && (connectedSsids.Contains(network))))
+
+                    foreach (WlanClient.WlanInterface wlanInterface in wlan.Interfaces)
+                    {
+
+                        Wlan.Dot11Ssid ssid = wlanInterface.CurrentConnection.wlanAssociationAttributes.dot11Ssid;
+                        connectedSsids.Add("garbage");
+                        connectedSsids.Add(new String(Encoding.ASCII.GetChars(ssid.SSID, 0, (int)ssid.SSIDLength)));
+                        if (!((connectedSsids.Contains("garbage")) && (connectedSsids.Contains(network))))
                         {
                             char[] arr = str.ToCharArray();
                             arr[0] = '0';
@@ -76,8 +74,9 @@ namespace xbox_3
                             textBox2.Text = str;
                         }
                     }
+                }
             }
-            else
+            catch
             {
                 char[] arr = str.ToCharArray();
                 arr[0] = '0';
@@ -90,8 +89,8 @@ namespace xbox_3
                 MessageBox.Show("You have lost connection to the Lawnmower");
                 textBox2.Text = str;
             }
-                
         }
+            
 
 
 
@@ -139,6 +138,7 @@ namespace xbox_3
 
             State stateNew = controller.GetState();
             //buttons controlls
+           
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
             {
                 // MessageBox.Show("a pressed");
@@ -249,6 +249,26 @@ namespace xbox_3
                 SendPacket(str);
                 textBox2.Text = str;
             }
+            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.RightThumb && stateNew.Gamepad.Buttons == GamepadButtonFlags.RightThumb)   //stop button
+            {
+                char[] arr = str.ToCharArray();
+                char[] array = temp.ToCharArray();
+                array[0] = '0';
+                array[1] = '0';
+                array[2] = '0';
+                arr[1] = '0';
+                arr[2] = '0';
+                arr[3] = '0';
+                arr[4] = '0';
+                str = new string(arr);
+                temp = new string(array);
+                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                str = str.Remove(0, 1).Insert(0, binary);
+                SendPacket(str);
+                textBox2.Text = str;
+
+            }
+
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)
             {
 
@@ -339,9 +359,9 @@ namespace xbox_3
                     textBox2.Text = str;
                 }
             }
-                this.stateOld = stateNew;
-            }
-        
+            
+         }
+       /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
@@ -485,13 +505,13 @@ namespace xbox_3
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-         //Wifi(); //put in timer
+         Wifi(); //put in timer
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             //clock started in button1()
-            GetInput();
+            GetInput();   //50ms
         }   
     }
 }
