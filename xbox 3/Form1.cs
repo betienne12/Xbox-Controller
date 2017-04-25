@@ -17,11 +17,13 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Collections.ObjectModel;
 
+
 namespace xbox_3
 {
     
     public partial class Form1 : Form
     {
+
         Controller controller;
         private State stateOld;
         public bool connected = false;
@@ -29,7 +31,7 @@ namespace xbox_3
        // private UdpClient client = null;
        // private Stream stm = null;
         private string temp = "000";
-        private string str = "72020"; //inital packet 7F
+        private string str = "71919"; //inital packet 19
         
         
         
@@ -43,28 +45,52 @@ namespace xbox_3
 
        public void Wifi()   //check if connected to lawnmower if not stop mower
         {
-            WlanClient wlan = new WlanClient();
-            Collection<String> connectedSsids = new Collection<string>();
-            string network = "UMASSD-A";
+            
 
-            foreach (WlanClient.WlanInterface wlanInterface in wlan.Interfaces)
-            {
-                Wlan.Dot11Ssid ssid = wlanInterface.CurrentConnection.wlanAssociationAttributes.dot11Ssid;
-                connectedSsids.Add("garbage");
-                connectedSsids.Add(new String(Encoding.ASCII.GetChars(ssid.SSID, 0, (int)ssid.SSIDLength)));
-                if (!((connectedSsids.Contains("garbage")) && (connectedSsids.Contains(network))))
+    
+            
+        WlanClient wlan = new WlanClient();
+        Collection<String> connectedSsids = new Collection<string>();
+        string network = "UMASSD-A";
+        bool Connection = NetworkInterface.GetIsNetworkAvailable();
+        if (Connection == true)
+            { 
+                
+                foreach (WlanClient.WlanInterface wlanInterface in wlan.Interfaces)
                 {
-                    char[] arr = str.ToCharArray();
-                    arr[0] = '0';
-                    arr[1] = '0';
-                    arr[2] = '0';
-                    arr[3] = '0';
-                    arr[4] = '0';
-                    str = new string(arr);
-                    SendPacket(str);
-                    textBox2.Text = str;
-                }
+                    string o;
+                    Wlan.Dot11Ssid ssid = wlanInterface.CurrentConnection.wlanAssociationAttributes.dot11Ssid;
+                    connectedSsids.Add("garbage");
+                    connectedSsids.Add(new String(Encoding.ASCII.GetChars(ssid.SSID, 0, (int)ssid.SSIDLength)));
+                    if (!((connectedSsids.Contains("garbage")) && (connectedSsids.Contains(network))))
+                        {
+                            char[] arr = str.ToCharArray();
+                            arr[0] = '0';
+                            arr[1] = '0';
+                            arr[2] = '0';
+                            arr[3] = '0';
+                            arr[4] = '0';
+                            str = new string(arr);
+                            SendPacket(str);
+                            MessageBox.Show("You have lost connection to the Lawnmower");
+                            textBox2.Text = str;
+                        }
+                    }
             }
+            else
+            {
+                char[] arr = str.ToCharArray();
+                arr[0] = '0';
+                arr[1] = '0';
+                arr[2] = '0';
+                arr[3] = '0';
+                arr[4] = '0';
+                str = new string(arr);
+                SendPacket(str);
+                MessageBox.Show("You have lost connection to the Lawnmower");
+                textBox2.Text = str;
+            }
+                
         }
 
 
@@ -272,9 +298,16 @@ namespace xbox_3
                 else
                 {
                     char[] arr = temp.ToCharArray();
+                    char[] speed = str.ToCharArray();
                     arr[1] = '0';   //assuming one is forward
                     arr[2] = '1';
+
+                    speed[1] = '0';
+                    speed[2] = 'A';
+                    speed[3] = '0';
+                    speed[4] = 'A';
                     temp = new string(arr);
+                    str = new string(speed);
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
@@ -290,9 +323,16 @@ namespace xbox_3
                 else
                 {
                     char[] arr = temp.ToCharArray();
+                    char[] speed = str.ToCharArray();
                     arr[1] = '1';   //assuming one is forward
                     arr[2] = '0';  //assuming is backward
+
+                    speed[1] = '0';
+                    speed[2] = 'A';
+                    speed[3] = '0';
+                    speed[4] = 'A';
                     temp = new string(arr);
+                    str = new string(speed);
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
@@ -405,12 +445,18 @@ namespace xbox_3
         private void button2_Click_1(object sender, EventArgs e)  //stop button
         {
             char[] arr = str.ToCharArray();
-            arr[0] = '0';
+            char[] array = temp.ToCharArray();
+            array[0] = '0';
+            array[1] = '0';
+            array[2] = '0';
             arr[1] = '0';
             arr[2] = '0';
             arr[3] = '0';
             arr[4] = '0';
             str = new string(arr);
+            temp = new string(array);
+            String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+            str = str.Remove(0, 1).Insert(0, binary);
             SendPacket(str);
             textBox2.Text = str;
         }
@@ -439,7 +485,7 @@ namespace xbox_3
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-         Wifi(); //put in timer
+         //Wifi(); //put in timer
         }
 
         private void timer1_Tick(object sender, EventArgs e)
