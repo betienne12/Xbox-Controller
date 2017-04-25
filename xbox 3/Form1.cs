@@ -29,7 +29,7 @@ namespace xbox_3
        // private UdpClient client = null;
        // private Stream stm = null;
         private string temp = "000";
-        private string str = "71919"; //inital packet 7F
+        private string str = "72020"; //inital packet 7F
         
         
         
@@ -37,23 +37,33 @@ namespace xbox_3
         public Form1()
         {
             InitializeComponent();
-            Wifi(); //put in timer
+            timer3.Enabled = true;
             textBox1.Text = "Controller Settings: \r\nPress Start Button to start the lawnmower \r\nPress X to turn on blade \r\nPress Y to turn off Blade \r\nPress A to increase speed \r\nPress B to decrease speed";
         }
 
-       public void Wifi()
+       public void Wifi()   //check if connected to lawnmower if not stop mower
         {
             WlanClient wlan = new WlanClient();
             Collection<String> connectedSsids = new Collection<string>();
+            string network = "UMASSD-A";
 
             foreach (WlanClient.WlanInterface wlanInterface in wlan.Interfaces)
             {
                 Wlan.Dot11Ssid ssid = wlanInterface.CurrentConnection.wlanAssociationAttributes.dot11Ssid;
+                connectedSsids.Add("garbage");
                 connectedSsids.Add(new String(Encoding.ASCII.GetChars(ssid.SSID, 0, (int)ssid.SSIDLength)));
-            }
-            foreach( string x in connectedSsids)
-            {
-                MessageBox.Show(x);
+                if (!((connectedSsids.Contains("garbage")) && (connectedSsids.Contains(network))))
+                {
+                    char[] arr = str.ToCharArray();
+                    arr[0] = '0';
+                    arr[1] = '0';
+                    arr[2] = '0';
+                    arr[3] = '0';
+                    arr[4] = '0';
+                    str = new string(arr);
+                    SendPacket(str);
+                    textBox2.Text = str;
+                }
             }
         }
 
@@ -128,7 +138,7 @@ namespace xbox_3
                 arr[4] = speed[1];
                 str = new string(arr);
                 SendPacket(str);
-                MessageBox.Show(str);
+                textBox2.Text = str;
 
 
             }
@@ -159,7 +169,7 @@ namespace xbox_3
                 arr[4] = speed[1];
                 str = new string(arr);
                 SendPacket(str);
-                MessageBox.Show(str);
+                textBox2.Text = str;
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)  //turn on blade
             {
@@ -174,7 +184,7 @@ namespace xbox_3
                     //MessageBox.Show(binary);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
-                    MessageBox.Show(str);
+                    textBox2.Text = str;
                 }
 
             }
@@ -191,7 +201,7 @@ namespace xbox_3
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
-                    MessageBox.Show(str);
+                    textBox2.Text = str;
                 }
 
             }
@@ -211,7 +221,7 @@ namespace xbox_3
                 String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                 str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
-                MessageBox.Show(str);
+                textBox2.Text = str;
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)
             {
@@ -229,7 +239,7 @@ namespace xbox_3
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);  
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
-                    MessageBox.Show(str);
+                    textBox2.Text = str;
 
                 }
             }
@@ -249,9 +259,9 @@ namespace xbox_3
                         String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                         str = str.Remove(0, 1).Insert(0, binary);
                         SendPacket(str);
-                        MessageBox.Show(str);
+                    textBox2.Text = str;
 
-                    }
+                }
                 }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)
             {
@@ -268,7 +278,7 @@ namespace xbox_3
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
-                    MessageBox.Show(str);
+                    textBox2.Text = str;
                 }
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
@@ -286,7 +296,7 @@ namespace xbox_3
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
-                    MessageBox.Show(str);
+                    textBox2.Text = str;
                 }
             }
                 this.stateOld = stateNew;
@@ -299,6 +309,7 @@ namespace xbox_3
             //Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
+            
         }
         private void button2_Click(object sender, EventArgs e) //blade on button
         {
@@ -312,7 +323,7 @@ namespace xbox_3
                 String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                 str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
-                MessageBox.Show(str);
+                textBox2.Text = str;
             }
         }
         private void button3_Click(object sender, EventArgs e) //blade off
@@ -329,7 +340,7 @@ namespace xbox_3
                 String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);  //convert to decimal
                 str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
-                MessageBox.Show(str);
+                textBox2.Text = str;
             }
         }
         private void button4_Click(object sender, EventArgs e) //increase speed
@@ -356,7 +367,7 @@ namespace xbox_3
             arr[4] = speed[1];
             str = new string(arr);
             SendPacket(str);
-            MessageBox.Show(str);
+            textBox2.Text = str;
         }
         private void button5_Click(object sender, EventArgs e)  //decrease sppeed
         {
@@ -383,7 +394,7 @@ namespace xbox_3
             arr[4] = speed[1];
             str = new string(arr);
             SendPacket(str);
-            MessageBox.Show(str);
+            textBox2.Text = str;
         }
         private void timer2_Tick(object sender, EventArgs e)  //timer for joystick updating
         {
@@ -401,26 +412,34 @@ namespace xbox_3
             arr[4] = '0';
             str = new string(arr);
             SendPacket(str);
-            MessageBox.Show(str);
+            textBox2.Text = str;
         }
 
         private void button6_Click(object sender, EventArgs e)  //start button
         {
+            string t= str;
+            char[] decoy= t.ToCharArray();
             char[] arr = temp.ToCharArray();
+            char[] packet = str.ToCharArray();
             arr[0] = '1';
             arr[1] = '1';   //assuming 0 is backwards
             arr[2] = '1';
             temp = new string(arr);
-            char[] packet = str.ToCharArray();
-            packet[1] = '1';
-            packet[2] = '9';
-            packet[3] = '1';
-            packet[4] = '9';
+
+            packet[1] = decoy[1];
+            packet[2] = decoy[2];
+            packet[3] = decoy[3];
+            packet[4] = decoy[4];
             str = new string(packet);
             String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
             str = str.Remove(0, 1).Insert(0, binary);
             SendPacket(str);
-            MessageBox.Show(str);
+            textBox2.Text = str;
+        }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+         Wifi(); //put in timer
         }
 
         private void timer1_Tick(object sender, EventArgs e)
