@@ -282,7 +282,7 @@ namespace xbox_3
                 }
                 else
                 {
-                    Speed_Reset();
+                    //Speed_Reset();
                     char[] arr = temp.ToCharArray();
                     arr[1] = '0';   //assuming 0 is backwards
                     arr[2] = '0';
@@ -303,7 +303,7 @@ namespace xbox_3
                     }
                     else
                     {
-                        Speed_Reset();
+                        //Speed_Reset();
                         char[] arr = temp.ToCharArray();
                         arr[1] = '1';   //assuming one is forward
                         arr[2] = '1';
@@ -324,21 +324,22 @@ namespace xbox_3
                 else
                 {
                     Speed_Reset();
+                    string motion = str;
                     char[] arr = temp.ToCharArray();
-                    char[] speed = str.ToCharArray();
+                    char[] speed = motion.ToCharArray();
                     arr[1] = '0';   //assuming one is forward
-                    arr[2] = '1';
+                    arr[2] = '1';  //assuming is backward
 
                     speed[1] = '0';
                     speed[2] = 'A';
                     speed[3] = '0';
                     speed[4] = 'A';
                     temp = new string(arr);
-                    str = new string(speed);
+                    motion = new string(speed);
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    str = str.Remove(0, 1).Insert(0, binary);
-                    SendPacket(str);
-                    textBox2.Text = str;
+                    motion = motion.Remove(0, 1).Insert(0, binary);
+                    SendPacket(motion);
+                    textBox2.Text = motion;
                 }
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
@@ -350,8 +351,9 @@ namespace xbox_3
                 else
                 {
                     Speed_Reset();
+                    string motion = str;
                     char[] arr = temp.ToCharArray();
-                    char[] speed = str.ToCharArray();
+                    char[] speed = motion.ToCharArray();
                     arr[1] = '1';   //assuming one is forward
                     arr[2] = '0';  //assuming is backward
 
@@ -360,11 +362,11 @@ namespace xbox_3
                     speed[3] = '0';
                     speed[4] = 'A';
                     temp = new string(arr);
-                    str = new string(speed);
+                    motion = new string(speed);
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    str = str.Remove(0, 1).Insert(0, binary);
-                    SendPacket(str);
-                    textBox2.Text = str;
+                    motion = motion.Remove(0, 1).Insert(0, binary);
+                    SendPacket(motion);
+                    textBox2.Text = motion;
                 }
             }
             
@@ -522,8 +524,8 @@ namespace xbox_3
             SendPacket(reset);
             textBox2.Text = reset;
             Stall();
-            SendPacket(str);
-            textBox2.Text = str;
+            /*SendPacket(str);
+            textBox2.Text = str;*/
             
 
         }
