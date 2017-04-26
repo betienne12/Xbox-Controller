@@ -16,7 +16,7 @@ using NativeWifi;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Collections.ObjectModel;
-
+using System.Threading;
 
 namespace xbox_3
 {
@@ -29,10 +29,12 @@ namespace xbox_3
         public bool connected = false;
         private double normalizedLX, normalizedLY;
         private string temp = "000";
-        private string str = "71919"; //inital packet 19
-        
-        
-        
+        private string initial = "71919";  //inital static packet
+        private string str = "71919"; 
+        private static WlanClient wlan = new WlanClient();
+
+
+
 
         public Form1()
         {
@@ -45,9 +47,9 @@ namespace xbox_3
         public void Wifi()   //check if connected to lawnmower if not stop mower
         {
 
-            WlanClient wlan = new WlanClient();
+           
             Collection<String> connectedSsids = new Collection<string>();
-            string network = "UMASSD-A";
+            string network = "BelkinSewell";
             bool Connection = NetworkInterface.GetIsNetworkAvailable();
             try
             {
@@ -233,16 +235,18 @@ namespace xbox_3
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Start && stateNew.Gamepad.Buttons == GamepadButtonFlags.Start)
             {
+                char[] decoy = initial.ToCharArray();
                 char[] arr = temp.ToCharArray();
+                char[] packet = str.ToCharArray();
                 arr[0] = '1';
                 arr[1] = '1';   //assuming 0 is backwards
                 arr[2] = '1';
                 temp = new string(arr);
-                char[] packet = str.ToCharArray();
-                packet[1] = '1';
-                packet[2] = '9';
-                packet[3] = '1';
-                packet[4] = '9';
+
+                packet[1] = decoy[1];
+                packet[2] = decoy[2];
+                packet[3] = decoy[3];
+                packet[4] = decoy[4];
                 str = new string(packet);
                 String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                 str = str.Remove(0, 1).Insert(0, binary);
@@ -271,13 +275,14 @@ namespace xbox_3
 
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)
             {
-
+                
                 if ((temp[1] == '0') && (temp[2] == '0'))
                 {
                     MessageBox.Show("LawnMower is already going backwards");
                 }
                 else
                 {
+                    Speed_Reset();
                     char[] arr = temp.ToCharArray();
                     arr[1] = '0';   //assuming 0 is backwards
                     arr[2] = '0';
@@ -298,6 +303,7 @@ namespace xbox_3
                     }
                     else
                     {
+                        Speed_Reset();
                         char[] arr = temp.ToCharArray();
                         arr[1] = '1';   //assuming one is forward
                         arr[2] = '1';
@@ -317,6 +323,7 @@ namespace xbox_3
                 }
                 else
                 {
+                    Speed_Reset();
                     char[] arr = temp.ToCharArray();
                     char[] speed = str.ToCharArray();
                     arr[1] = '0';   //assuming one is forward
@@ -342,6 +349,7 @@ namespace xbox_3
                 }
                 else
                 {
+                    Speed_Reset();
                     char[] arr = temp.ToCharArray();
                     char[] speed = str.ToCharArray();
                     arr[1] = '1';   //assuming one is forward
@@ -366,7 +374,6 @@ namespace xbox_3
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
             Connect();
-            //Client_Connect();
             timer1.Enabled = true;
             timer2.Enabled = true;
             
@@ -388,7 +395,7 @@ namespace xbox_3
         }
         private void button3_Click(object sender, EventArgs e) //blade off
         {
-            //MessageBox.Show(temp);
+            
             if (temp[0] == '0')
             {
                 MessageBox.Show("The Blade is already off");
@@ -431,6 +438,7 @@ namespace xbox_3
         }
         private void button5_Click(object sender, EventArgs e)  //decrease sppeed
         {
+            
             char[] arr = str.ToCharArray();
             string speed;
             string bit_1 = (arr[1]).ToString();
@@ -483,8 +491,8 @@ namespace xbox_3
 
         private void button6_Click(object sender, EventArgs e)  //start button
         {
-            string t= str;
-            char[] decoy= t.ToCharArray();
+            
+            char[] decoy = initial.ToCharArray();
             char[] arr = temp.ToCharArray();
             char[] packet = str.ToCharArray();
             arr[0] = '1';
@@ -501,6 +509,31 @@ namespace xbox_3
             str = str.Remove(0, 1).Insert(0, binary);
             SendPacket(str);
             textBox2.Text = str;
+        }
+        private void Speed_Reset()
+        {
+            string reset = str;
+            char[] arr = reset.ToCharArray();
+            arr[1] = '0';
+            arr[2] = '0';
+            arr[3] = '0';
+            arr[4] = '0';
+            reset = new string(arr);
+            SendPacket(reset);
+            textBox2.Text = reset;
+            Stall();
+            SendPacket(str);
+            textBox2.Text = str;
+            
+
+        }
+        private void Stall()
+        {
+            var t = Task.Run(async delegate
+            {
+                await Task.Delay(2000);     //2sec delay
+            });
+            t.Wait();
         }
 
         private void timer3_Tick(object sender, EventArgs e)
