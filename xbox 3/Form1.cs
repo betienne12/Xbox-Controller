@@ -23,9 +23,13 @@ namespace xbox_3
     
     public partial class Form1 : Form
     {
-
+        private SharpDX.XInput.State lastGamepadState = new SharpDX.XInput.State();
         Controller controller;
+        Gamepad gamepad;
+        double LeftTrigger;
         private State stateOld;
+        bool shown = false;
+        private int l = 1;
         public bool connected = false;
         private double normalizedLX, normalizedLY;
         private string temp = "000";
@@ -49,7 +53,7 @@ namespace xbox_3
 
            
             Collection<String> connectedSsids = new Collection<string>();
-            string network = "BelkinSewell";
+            string network = "UMASSD-A";
             bool Connection = NetworkInterface.GetIsNetworkAvailable();
             try
             {
@@ -72,9 +76,12 @@ namespace xbox_3
                             arr[4] = '0';
                             str = new string(arr);
                             SendPacket(str);
-                            MessageBox.Show("You have lost connection to the Lawnmower");
+                            textBox4.Text = "Lost Connection";
                             textBox2.Text = str;
                         }
+                        else
+                            textBox4.Text = "Connected";
+
                     }
                 }
             }
@@ -88,7 +95,9 @@ namespace xbox_3
                 arr[4] = '0';
                 str = new string(arr);
                 SendPacket(str);
-                MessageBox.Show("You have lost connection to the Lawnmower");
+               textBox4.Text="Lost connection";
+                    
+                
                 textBox2.Text = str;
             }
         }
@@ -137,8 +146,12 @@ namespace xbox_3
         }
         void GetInput()
         {
-
+            State j = controller.GetState();
+            LeftTrigger=j.Gamepad.LeftTrigger;
+            
             State stateNew = controller.GetState();
+            //MessageBox.Show(trig);
+            
             //buttons controlls
            
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
@@ -213,6 +226,8 @@ namespace xbox_3
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
                     textBox2.Text = str;
+                    button3.BackColor = SystemColors.Control;
+                    blade_on.BackColor = System.Drawing.Color.LightSkyBlue;
                 }
 
             }
@@ -229,6 +244,8 @@ namespace xbox_3
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
+                    button3.BackColor = System.Drawing.Color.LightSkyBlue;
+                    blade_on.BackColor =SystemColors.Control;
                     textBox2.Text = str;
                 }
 
@@ -253,7 +270,7 @@ namespace xbox_3
                 SendPacket(str);
                 textBox2.Text = str;
             }
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.RightThumb && stateNew.Gamepad.Buttons == GamepadButtonFlags.RightThumb)   //stop button
+            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.RightShoulder && stateNew.Gamepad.Buttons == GamepadButtonFlags.RightShoulder)   //stop button
             {
                 char[] arr = str.ToCharArray();
                 char[] array = temp.ToCharArray();
@@ -272,29 +289,30 @@ namespace xbox_3
                 textBox2.Text = str;
 
             }
-
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)
-            {
-                
-                if ((temp[1] == '0') && (temp[2] == '0'))
+            /*//if(LeftTrigger>0)
+            //{
+                if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)&& (LeftTrigger > 0))
                 {
-                    MessageBox.Show("LawnMower is already going backwards");
-                }
-                else
-                {
-                    //Speed_Reset();
-                    char[] arr = temp.ToCharArray();
-                    arr[1] = '0';   //assuming 0 is backwards
-                    arr[2] = '0';
-                    temp = new string(arr);
-                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);  
-                    str = str.Remove(0, 1).Insert(0, binary);
-                    SendPacket(str);
-                    textBox2.Text = str;
 
+                    if ((temp[1] == '0') && (temp[2] == '0'))
+                    {
+                        MessageBox.Show("LawnMower is already going backwards");
+                    }
+                    else
+                    {
+                        //Speed_Reset();
+                        char[] arr = temp.ToCharArray();
+                        arr[1] = '0';   //assuming 0 is backwards
+                        arr[2] = '0';
+                        temp = new string(arr);
+                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                        str = str.Remove(0, 1).Insert(0, binary);
+                        SendPacket(str);
+                        textBox2.Text = str;
+
+                    }
                 }
-            }
-                if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)
+               if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)
                 {
 
                     if ((temp[1] == '1') && (temp[2] == '1'))
@@ -311,68 +329,184 @@ namespace xbox_3
                         String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                         str = str.Remove(0, 1).Insert(0, binary);
                         SendPacket(str);
-                    textBox2.Text = str;
+                        textBox2.Text = str;
 
+                    }
                 }
-                }
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)
-            {
-                if ((temp[1] == '0') && (temp[2] == '1'))   //assuming dir1 is left
+                if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)
                 {
-                    MessageBox.Show("LawnMower is turning left");
-                }
-                else
-                {
-                    Speed_Reset();
-                    string motion = str;
-                    char[] arr = temp.ToCharArray();
-                    char[] speed = motion.ToCharArray();
-                    arr[1] = '0';   //assuming one is forward
-                    arr[2] = '1';  //assuming is backward
+                    if ((temp[1] == '0') && (temp[2] == '1'))   //assuming dir1 is left
+                    {
+                        MessageBox.Show("LawnMower is turning left");
+                    }
+                    else
+                    {
+                        //Speed_Reset();
+                        string motion = str;
+                        char[] arr = temp.ToCharArray();
+                        char[] speed = motion.ToCharArray();
+                        arr[1] = '0';   //assuming one is forward
+                        arr[2] = '1';  //assuming is backward
 
-                    speed[1] = '0';
-                    speed[2] = 'A';
-                    speed[3] = '0';
-                    speed[4] = 'A';
-                    temp = new string(arr);
-                    motion = new string(speed);
-                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    motion = motion.Remove(0, 1).Insert(0, binary);
-                    SendPacket(motion);
-                    textBox2.Text = motion;
+                        speed[1] = '0';
+                        speed[2] = 'A';
+                        speed[3] = '0';
+                        speed[4] = 'A';
+                        temp = new string(arr);
+                        motion = new string(speed);
+                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                        motion = motion.Remove(0, 1).Insert(0, binary);
+                        SendPacket(motion);
+                        textBox2.Text = motion;
+                    }
                 }
-            }
-            if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
-            {
-                if ((temp[1] == '1') && (temp[2] == '0'))   //assuming dir2 is right
+                if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
                 {
-                    MessageBox.Show("LawnMower is turning right");
-                }
-                else
-                {
-                    Speed_Reset();
-                    string motion = str;
-                    char[] arr = temp.ToCharArray();
-                    char[] speed = motion.ToCharArray();
-                    arr[1] = '1';   //assuming one is forward
-                    arr[2] = '0';  //assuming is backward
+                    if ((temp[1] == '1') && (temp[2] == '0'))   //assuming dir2 is right
+                    {
+                        MessageBox.Show("LawnMower is turning right");
+                    }
+                    else
+                    {
+                        // Speed_Reset();
+                        string motion = str;
+                        char[] arr = temp.ToCharArray();
+                        char[] speed = motion.ToCharArray();
+                        arr[1] = '1';   //assuming one is forward
+                        arr[2] = '0';  //assuming is backward
 
-                    speed[1] = '0';
-                    speed[2] = 'A';
-                    speed[3] = '0';
-                    speed[4] = 'A';
-                    temp = new string(arr);
-                    motion = new string(speed);
-                    String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    motion = motion.Remove(0, 1).Insert(0, binary);
-                    SendPacket(motion);
-                    textBox2.Text = motion;
-                }
-            }
-            
+                        speed[1] = '0';
+                        speed[2] = 'A';
+                        speed[3] = '0';
+                        speed[4] = 'A';
+                        temp = new string(arr);
+                        motion = new string(speed);
+                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                        motion = motion.Remove(0, 1).Insert(0, binary);
+                        SendPacket(motion);
+                        textBox2.Text = motion;
+                    }
+                }*/
+                
+            //}
+           /* else
+             {
+                char[] arr = str.ToCharArray();
+                char[] array = temp.ToCharArray();
+                array[0] = '0';
+                array[1] = '0';
+                array[2] = '0';
+                arr[1] = '0';
+                arr[2] = '0';
+                arr[3] = '0';
+                arr[4] = '0';
+                str = new string(arr);
+                temp = new string(array);
+                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                str = str.Remove(0, 1).Insert(0, binary);
+                SendPacket(str);
+                textBox2.Text = str;
+
+            }*/
+            stateOld = stateNew;
          }
        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+        private void Navigate()
+        {
+            State stateNew = controller.GetState();
+            if (LeftTrigger > 0)
+            {
+                if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)) // && (LeftTrigger > 0))
+                {
+                        //Speed_Reset();
+                        char[] arr = temp.ToCharArray();
+                        arr[1] = '0';   //assuming 0 is backwards
+                        arr[2] = '0';
+                        temp = new string(arr);
+                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                        str = str.Remove(0, 1).Insert(0, binary);
+                        SendPacket(str);
+                        textBox2.Text = str;
+                    
+
+                }
+                if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)) // && (LeftTrigger > 0))
+                {
+                        //Speed_Reset();
+                        char[] arr = temp.ToCharArray();
+                        arr[1] = '1';   //assuming one is forward
+                        arr[2] = '1';
+                        temp = new string(arr);
+                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                        str = str.Remove(0, 1).Insert(0, binary);
+                        SendPacket(str);
+                        textBox2.Text = str;
+
+                    
+                }
+                if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)) //&& (LeftTrigger > 0))
+                {
+                        //Speed_Reset();
+                        string motion = str;
+                        char[] arr = temp.ToCharArray();
+                        char[] speed = motion.ToCharArray();
+                        arr[1] = '0';   //assuming one is forward
+                        arr[2] = '1';  //assuming is backward
+
+                        speed[1] = '0';
+                        speed[2] = 'A';
+                        speed[3] = '0';
+                        speed[4] = 'A';
+                        temp = new string(arr);
+                        motion = new string(speed);
+                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                        motion = motion.Remove(0, 1).Insert(0, binary);
+                        SendPacket(motion);
+                        textBox2.Text = motion;
+                    
+                }
+                if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
+                {
+                        // Speed_Reset();
+                        string motion = str;
+                        char[] arr = temp.ToCharArray();
+                        char[] speed = motion.ToCharArray();
+                        arr[1] = '1';   //assuming one is forward
+                        arr[2] = '0';  //assuming is backward
+
+                        speed[1] = '0';
+                        speed[2] = 'A';
+                        speed[3] = '0';
+                        speed[4] = 'A';
+                        temp = new string(arr);
+                        motion = new string(speed);
+                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                        motion = motion.Remove(0, 1).Insert(0, binary);
+                        SendPacket(motion);
+                        textBox2.Text = motion;
+                    
+                }
+            }
+            else
+            {
+                char[] arr = str.ToCharArray();
+                char[] array = temp.ToCharArray();
+                array[0] = '0';
+               array[1] = '0';
+               array[2] = '0';
+                arr[1] = '0';
+                arr[2] = '0';
+                arr[3] = '0';
+                arr[4] = '0';
+                str = new string(arr);
+                temp = new string(array);
+               String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+               str = str.Remove(0, 1).Insert(0, binary);
+                SendPacket(str);
+                textBox2.Text = str;
+
+            }
+        }
         private void button1_Click(object sender, EventArgs e)  //Connect button
         {
             Connect();
@@ -382,26 +516,20 @@ namespace xbox_3
         }
         private void button2_Click(object sender, EventArgs e) //blade on button
         {
-            if (temp[0] == '1')
-            {
-                MessageBox.Show("The Blade is already on");
-            }
+           
             if (temp[0] != '1')
             {
                 temp = temp.Remove(0, 1).Insert(0, "1");  //100
                 String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                 str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
+                button3.BackColor = SystemColors.Control;
+                blade_on.BackColor = System.Drawing.Color.LightSkyBlue;
                 textBox2.Text = str;
             }
         }
         private void button3_Click(object sender, EventArgs e) //blade off
         {
-            
-            if (temp[0] == '0')
-            {
-                MessageBox.Show("The Blade is already off");
-            }
 
             if (temp[0] != '0')
             {
@@ -409,6 +537,8 @@ namespace xbox_3
                 String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);  //convert to decimal
                 str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
+                button3.BackColor = System.Drawing.Color.LightSkyBlue;
+                blade_on.BackColor = SystemColors.Control;
                 textBox2.Text = str;
             }
         }
@@ -540,13 +670,20 @@ namespace xbox_3
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-         Wifi(); //put in timer
+            
+            Wifi(); //put in timer
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             //clock started in button1()
             GetInput();   //50ms
+            Navigate();
         }   
     }
 }
