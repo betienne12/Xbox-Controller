@@ -51,7 +51,7 @@ namespace xbox_3
 
            
             Collection<String> connectedSsids = new Collection<string>();
-            string network = "LAWNMOWER";
+            string network = "UMASSD-A";
             bool Connection = NetworkInterface.GetIsNetworkAvailable();
             try
             {
@@ -511,11 +511,7 @@ namespace xbox_3
             SendPacket(str);
             textBox2.Text = str;
         }
-        private void timer2_Tick(object sender, EventArgs e)  //timer for joystick updating
-        {
-            //clock started in button1()
-           // Joystick();
-        }
+       
 
         private void button2_Click_1(object sender, EventArgs e)  //stop button
         {
@@ -589,16 +585,17 @@ namespace xbox_3
             Wifi(); //put in timer
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             //clock started in button1()
             GetInput();   //50ms
             Navigate();
-        }   
+        }
+        private void timer2_Tick(object sender, EventArgs e)  //timer for joystick updating
+        {
+            //clock started in button1()
+            // Joystick();
+        }
     }
 }

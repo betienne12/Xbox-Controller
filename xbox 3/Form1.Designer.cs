@@ -175,7 +175,6 @@
             this.label1.Size = new System.Drawing.Size(104, 13);
             this.label1.TabIndex = 12;
             this.label1.Text = "Lawn Mower Status:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // textBox4
             // 
