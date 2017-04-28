@@ -33,8 +33,8 @@ namespace xbox_3
         public bool connected = false;
         private double normalizedLX, normalizedLY;
         private string temp = "000";
-        private string initial = "71919";  //inital static packet
-        private string str = "71919"; 
+        private string initial = "76464";  //inital static packet
+        private string str = "76464"; 
         private static WlanClient wlan = new WlanClient();
 
 
@@ -53,7 +53,7 @@ namespace xbox_3
 
            
             Collection<String> connectedSsids = new Collection<string>();
-            string network = "UMASSD-A";
+            string network = "LAWNMOWER";
             bool Connection = NetworkInterface.GetIsNetworkAvailable();
             try
             {
@@ -214,15 +214,14 @@ namespace xbox_3
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.X && stateNew.Gamepad.Buttons == GamepadButtonFlags.X)  //turn on blade
             {
-                if (temp[0] == '1')
-                {
-                    MessageBox.Show("The Blade is already on");
-                }
+                //if (temp[0] == '1')
+                //{
+                //    MessageBox.Show("The Blade is already on");
+                //}
                 if (temp[0] != '1')
                 {
                     temp = temp.Remove(0, 1).Insert(0, "1");  //100
                     String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                    //MessageBox.Show(binary);
                     str = str.Remove(0, 1).Insert(0, binary);
                     SendPacket(str);
                     textBox2.Text = str;
@@ -233,10 +232,10 @@ namespace xbox_3
             }
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.Y && stateNew.Gamepad.Buttons == GamepadButtonFlags.Y)  //turn off blade
             {
-                if (temp[0] == '0')
-                {
-                    MessageBox.Show("The Blade is already off");
-                }
+                //if (temp[0] == '0')
+                //{
+                //    MessageBox.Show("The Blade is already off");
+                //}
 
                 if (temp[0] != '0')
                 {
@@ -432,6 +431,7 @@ namespace xbox_3
                 }
                 if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)) // && (LeftTrigger > 0))
                 {
+                    textBox5.Text = str; 
                         //Speed_Reset();
                         char[] arr = temp.ToCharArray();
                         arr[1] = '1';   //assuming one is forward
@@ -453,10 +453,10 @@ namespace xbox_3
                         arr[1] = '0';   //assuming one is forward
                         arr[2] = '1';  //assuming is backward
 
-                        speed[1] = '0';
-                        speed[2] = 'A';
+                        speed[1] = '6';
+                        speed[2] = '4';
                         speed[3] = '0';
-                        speed[4] = 'A';
+                        speed[4] = '0';
                         temp = new string(arr);
                         motion = new string(speed);
                         String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
@@ -475,9 +475,9 @@ namespace xbox_3
                         arr[2] = '0';  //assuming is backward
 
                         speed[1] = '0';
-                        speed[2] = 'A';
-                        speed[3] = '0';
-                        speed[4] = 'A';
+                        speed[2] = '0';
+                        speed[3] = '6';
+                        speed[4] = '4';
                         temp = new string(arr);
                         motion = new string(speed);
                         String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
@@ -498,12 +498,12 @@ namespace xbox_3
                 arr[2] = '0';
                 arr[3] = '0';
                 arr[4] = '0';
-                str = new string(arr);
+                string test = new string(arr);
                 temp = new string(array);
                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                str = str.Remove(0, 1).Insert(0, binary);
-                SendPacket(str);
-                textBox2.Text = str;
+                SendPacket(test);
+                textBox2.Text = test;
 
             }
         }

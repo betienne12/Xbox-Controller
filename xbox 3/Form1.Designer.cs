@@ -44,6 +44,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // timer1
@@ -53,7 +54,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(13, 2);
+            this.button1.Location = new System.Drawing.Point(13, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(259, 56);
             this.button1.TabIndex = 0;
@@ -64,7 +65,7 @@
             // blade_on
             // 
             this.blade_on.BackColor = System.Drawing.SystemColors.Control;
-            this.blade_on.Location = new System.Drawing.Point(12, 166);
+            this.blade_on.Location = new System.Drawing.Point(12, 175);
             this.blade_on.Name = "blade_on";
             this.blade_on.Size = new System.Drawing.Size(112, 57);
             this.blade_on.TabIndex = 1;
@@ -74,7 +75,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(12, 229);
+            this.button3.Location = new System.Drawing.Point(12, 238);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(112, 57);
             this.button3.TabIndex = 2;
@@ -95,7 +96,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(146, 166);
+            this.button4.Location = new System.Drawing.Point(146, 175);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(115, 57);
             this.button4.TabIndex = 6;
@@ -105,7 +106,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(146, 229);
+            this.button5.Location = new System.Drawing.Point(146, 238);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(115, 57);
             this.button5.TabIndex = 7;
@@ -121,7 +122,7 @@
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Red;
-            this.button2.Location = new System.Drawing.Point(146, 103);
+            this.button2.Location = new System.Drawing.Point(146, 112);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(115, 57);
             this.button2.TabIndex = 8;
@@ -132,7 +133,7 @@
             // button6
             // 
             this.button6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button6.Location = new System.Drawing.Point(13, 104);
+            this.button6.Location = new System.Drawing.Point(13, 112);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(112, 56);
             this.button6.TabIndex = 9;
@@ -158,36 +159,48 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(62, 457);
+            this.textBox2.BackColor = System.Drawing.SystemColors.Control;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox2.Location = new System.Drawing.Point(43, 439);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(129, 20);
+            this.textBox2.Size = new System.Drawing.Size(174, 13);
             this.textBox2.TabIndex = 10;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 71);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(20, 81);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(118, 13);
+            this.label1.Size = new System.Drawing.Size(104, 13);
             this.label1.TabIndex = 12;
-            this.label1.Text = "LawnMower Status:";
+            this.label1.Text = "Lawn Mower Status:";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // textBox4
             // 
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox4.Location = new System.Drawing.Point(146, 68);
+            this.textBox4.Location = new System.Drawing.Point(146, 76);
             this.textBox4.Name = "textBox4";
             this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(115, 22);
             this.textBox4.TabIndex = 13;
             // 
+            // textBox5
+            // 
+            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox5.Location = new System.Drawing.Point(267, 175);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.ReadOnly = true;
+            this.textBox5.Size = new System.Drawing.Size(115, 22);
+            this.textBox5.TabIndex = 14;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(281, 489);
+            this.ClientSize = new System.Drawing.Size(403, 464);
+            this.Controls.Add(this.textBox5);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox3);
@@ -224,6 +237,7 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox textBox5;
     }
 }
 
