@@ -23,13 +23,11 @@ namespace xbox_3
     
     public partial class Form1 : Form
     {
-        private SharpDX.XInput.State lastGamepadState = new SharpDX.XInput.State();
+        
         Controller controller;
         Gamepad gamepad;
         double LeftTrigger;
         private State stateOld;
-        bool shown = false;
-        private int l = 1;
         public bool connected = false;
         private double normalizedLX, normalizedLY;
         private string temp = "000";
@@ -53,7 +51,7 @@ namespace xbox_3
 
            
             Collection<String> connectedSsids = new Collection<string>();
-            string network = "UMASSD-A";
+            string network = "LAWNMOWER";
             bool Connection = NetworkInterface.GetIsNetworkAvailable();
             try
             {
@@ -174,125 +172,7 @@ namespace xbox_3
                 textBox2.Text = str;
 
             }
-            /*//if(LeftTrigger>0)
-            //{
-                if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)&& (LeftTrigger > 0))
-                {
-
-                    if ((temp[1] == '0') && (temp[2] == '0'))
-                    {
-                        MessageBox.Show("LawnMower is already going backwards");
-                    }
-                    else
-                    {
-                        //Speed_Reset();
-                        char[] arr = temp.ToCharArray();
-                        arr[1] = '0';   //assuming 0 is backwards
-                        arr[2] = '0';
-                        temp = new string(arr);
-                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                        str = str.Remove(0, 1).Insert(0, binary);
-                        SendPacket(str);
-                        textBox2.Text = str;
-
-                    }
-                }
-               if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)
-                {
-
-                    if ((temp[1] == '1') && (temp[2] == '1'))
-                    {
-                        MessageBox.Show("LawnMower is already going straight");
-                    }
-                    else
-                    {
-                        //Speed_Reset();
-                        char[] arr = temp.ToCharArray();
-                        arr[1] = '1';   //assuming one is forward
-                        arr[2] = '1';
-                        temp = new string(arr);
-                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                        str = str.Remove(0, 1).Insert(0, binary);
-                        SendPacket(str);
-                        textBox2.Text = str;
-
-                    }
-                }
-                if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)
-                {
-                    if ((temp[1] == '0') && (temp[2] == '1'))   //assuming dir1 is left
-                    {
-                        MessageBox.Show("LawnMower is turning left");
-                    }
-                    else
-                    {
-                        //Speed_Reset();
-                        string motion = str;
-                        char[] arr = temp.ToCharArray();
-                        char[] speed = motion.ToCharArray();
-                        arr[1] = '0';   //assuming one is forward
-                        arr[2] = '1';  //assuming is backward
-
-                        speed[1] = '0';
-                        speed[2] = 'A';
-                        speed[3] = '0';
-                        speed[4] = 'A';
-                        temp = new string(arr);
-                        motion = new string(speed);
-                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                        motion = motion.Remove(0, 1).Insert(0, binary);
-                        SendPacket(motion);
-                        textBox2.Text = motion;
-                    }
-                }
-                if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
-                {
-                    if ((temp[1] == '1') && (temp[2] == '0'))   //assuming dir2 is right
-                    {
-                        MessageBox.Show("LawnMower is turning right");
-                    }
-                    else
-                    {
-                        // Speed_Reset();
-                        string motion = str;
-                        char[] arr = temp.ToCharArray();
-                        char[] speed = motion.ToCharArray();
-                        arr[1] = '1';   //assuming one is forward
-                        arr[2] = '0';  //assuming is backward
-
-                        speed[1] = '0';
-                        speed[2] = 'A';
-                        speed[3] = '0';
-                        speed[4] = 'A';
-                        temp = new string(arr);
-                        motion = new string(speed);
-                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                        motion = motion.Remove(0, 1).Insert(0, binary);
-                        SendPacket(motion);
-                        textBox2.Text = motion;
-                    }
-                }*/
-                
-            //}
-           /* else
-             {
-                char[] arr = str.ToCharArray();
-                char[] array = temp.ToCharArray();
-                array[0] = '0';
-                array[1] = '0';
-                array[2] = '0';
-                arr[1] = '0';
-                arr[2] = '0';
-                arr[3] = '0';
-                arr[4] = '0';
-                str = new string(arr);
-                temp = new string(array);
-                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                str = str.Remove(0, 1).Insert(0, binary);
-                SendPacket(str);
-                textBox2.Text = str;
-
-            }*/
+            
             stateOld = stateNew;
          }
         private void Stop()
