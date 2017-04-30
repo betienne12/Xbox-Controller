@@ -51,7 +51,7 @@ namespace xbox_3
 
            
             Collection<String> connectedSsids = new Collection<string>();
-            string network = "UMASSD-A";
+            string network = "LAWNMOWER";
             bool Connection = NetworkInterface.GetIsNetworkAvailable();
             try
             {
@@ -464,15 +464,16 @@ namespace xbox_3
             string bit_1 = (arr[1]).ToString();
             string bit_2 = (arr[2]).ToString();
             string val = bit_1 + bit_2;    //2 bit hex value to be added
-                                           // MessageBox.Show(val);
-            if (val == "F0")   //F0 = 240 last value without going over 255
+            string dec = Convert.ToString(Convert.ToInt32(val, 16), 10);
+            if (Convert.ToInt32(dec) >= 235)                               
             {
                 speed = "FF";
-                MessageBox.Show("Max speed has been reached");
+                textBox5.Text = "Max Speed";
             }
             else
             {
                 int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) + 20;  //increment hex value by 20
+                textBox5.Text = intFromHex.ToString();
                 speed = intFromHex.ToString("X");
             }
             arr[1] = speed[0];
@@ -495,12 +496,13 @@ namespace xbox_3
             if(Convert.ToInt32(dec)<36)
             {
                 speed = "00";
-                MessageBox.Show("Lowest speed has been reached");
+                textBox5.Text = "0";
             }
             
             else
             {
                 int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) - 20;  //decrement hex value by 20
+                textBox5.Text = intFromHex.ToString();
                 speed = intFromHex.ToString("X");
             }
             arr[1] = speed[0];
@@ -529,6 +531,9 @@ namespace xbox_3
             String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
             str = str.Remove(0, 1).Insert(0, binary);
             SendPacket(str);
+            string speed = arr[3].ToString() + arr[4].ToString();
+            int dec = int.Parse(speed, System.Globalization.NumberStyles.HexNumber);
+            textBox5.Text = dec.ToString();
             textBox2.Text = str;
         }
 
@@ -551,6 +556,9 @@ namespace xbox_3
             String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
             str = str.Remove(0, 1).Insert(0, binary);
             SendPacket(str);
+            string speed = packet[3].ToString() + packet[4].ToString();
+            int dec=int.Parse(speed, System.Globalization.NumberStyles.HexNumber);
+            textBox5.Text = dec.ToString();
             textBox2.Text = str;
         }
         private void Speed_Reset()
@@ -592,6 +600,12 @@ namespace xbox_3
             GetInput();   //50ms
             Navigate();
         }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void timer2_Tick(object sender, EventArgs e)  //timer for joystick updating
         {
             //clock started in button1()
