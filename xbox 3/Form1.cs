@@ -175,25 +175,7 @@ namespace xbox_3
             
             stateOld = stateNew;
          }
-        private void Stop()
-        {
-            char[] arr = str.ToCharArray();
-            char[] array = temp.ToCharArray();
-            array[0] = '0';
-            array[1] = '0';
-            array[2] = '0';
-            arr[1] = '0';
-            arr[2] = '0';
-            arr[3] = '0';
-            arr[4] = '0';
-            string test = new string(arr);
-            temp = new string(array);
-            String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-            str = str.Remove(0, 1).Insert(0, binary);
-            SendPacket(test);
-            textBox2.Text = test;
-
-        }
+       
        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void Navigate()
         {
@@ -212,7 +194,7 @@ namespace xbox_3
                     if (val == "F0")   //F0 = 240 last value without going over 255
                     {
                         speed = "FF";
-                        MessageBox.Show("Max speed has been reached");
+                        textBox5.Text = "Max Speed";
                     }
                     else
                     {
@@ -241,7 +223,7 @@ namespace xbox_3
                     if (Convert.ToInt32(dec) < 36)
                     {
                         speed = "00";
-                        MessageBox.Show("Lowest speed has been reached");
+                        textBox5.Text = "0";
                     }
 
 
@@ -393,7 +375,7 @@ namespace xbox_3
                     
                 }
             }
-            if(LeftTrigger==0)
+            else
             {
                 char[] arr = str.ToCharArray();
                 char[] array = temp.ToCharArray();
@@ -422,10 +404,7 @@ namespace xbox_3
         }
         private void button2_Click(object sender, EventArgs e) //blade on button
         {
-            State j = controller.GetState();
-            LeftTrigger = j.Gamepad.LeftTrigger;
-            if (LeftTrigger == 0 || LeftTrigger > 0)
-            {
+            
                 char[] speed = str.ToCharArray();
                 speed[1] = '0';
                 speed[2] = '0';
@@ -440,7 +419,7 @@ namespace xbox_3
                 textBox2.Text = str;
                 button3.BackColor = SystemColors.Control;
                 blade_on.BackColor = System.Drawing.Color.LightSkyBlue;
-            }
+            
         
         }
         private void button3_Click(object sender, EventArgs e) //blade off
@@ -561,7 +540,7 @@ namespace xbox_3
             textBox5.Text = dec.ToString();
             textBox2.Text = str;
         }
-        private void Speed_Reset()
+       /* private void Speed_Reset()
         {
             string reset = str;
             char[] arr = reset.ToCharArray();
@@ -573,9 +552,29 @@ namespace xbox_3
             SendPacket(reset);
             textBox2.Text = reset;
             Stall();
-            /*SendPacket(str);
-            textBox2.Text = str;*/
+            //SendPacket(str);
+            //textBox2.Text = str;
             
+
+        }
+
+       private void Stop()
+        {
+            char[] arr = str.ToCharArray();
+            char[] array = temp.ToCharArray();
+            array[0] = '0';
+            array[1] = '0';
+            array[2] = '0';
+            arr[1] = '0';
+            arr[2] = '0';
+            arr[3] = '0';
+            arr[4] = '0';
+            string test = new string(arr);
+            temp = new string(array);
+            String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+            str = str.Remove(0, 1).Insert(0, binary);
+            SendPacket(test);
+            textBox2.Text = test;
 
         }
         private void Stall()
@@ -585,7 +584,7 @@ namespace xbox_3
                 await Task.Delay(2000);     //2sec delay
             });
             t.Wait();
-        }
+        }*/
 
         private void timer3_Tick(object sender, EventArgs e)
         {
