@@ -148,7 +148,7 @@ namespace xbox_3
             LeftTrigger=j.Gamepad.LeftTrigger;
             
             State stateNew = controller.GetState();
-            //MessageBox.Show(trig);
+            
             
             //buttons controlls
            
@@ -184,13 +184,13 @@ namespace xbox_3
             {
                 if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
                 {
-                    // MessageBox.Show("a pressed");
+                    
                     char[] arr = str.ToCharArray();
                     string speed;
                     string bit_1 = (arr[1]).ToString();
                     string bit_2 = (arr[2]).ToString();
                     string val = bit_1 + bit_2;    //2 bit hex value to be added
-                                                   // MessageBox.Show(val);
+                                                  
                     if (val == "F0")   //F0 = 240 last value without going over 255
                     {
                         speed = "FF";
@@ -307,21 +307,27 @@ namespace xbox_3
                 {
                         //Speed_Reset();
                         char[] arr = temp.ToCharArray();
-                        arr[1] = '0';   //assuming 0 is backwards
+                    
+                    arr[1] = '0';   //assuming 0 is backwards
                         arr[2] = '0';
                         temp = new string(arr);
                         String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                         str = str.Remove(0, 1).Insert(0, binary);
-                        SendPacket(str);
+                    char[] array = str.ToCharArray();
+                    SendPacket(str);
                         textBox2.Text = str;
-                    
+                    string speed = array[3].ToString() + array[4].ToString();
+                    int dec = int.Parse(speed, System.Globalization.NumberStyles.HexNumber);
+                    textBox5.Text = dec.ToString();
+
 
                 }
                 if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)) // && (LeftTrigger > 0))
                 {
-                    textBox5.Text = str; 
+                    
                         //Speed_Reset();
                         char[] arr = temp.ToCharArray();
+                        char[] array = str.ToCharArray();
                         arr[1] = '1';   //assuming one is forward
                         arr[2] = '1';
                         temp = new string(arr);
@@ -329,8 +335,12 @@ namespace xbox_3
                         str = str.Remove(0, 1).Insert(0, binary);
                         SendPacket(str);
                         textBox2.Text = str;
-
+                    string speed = array[3].ToString() + array[4].ToString();
+                    int dec = int.Parse(speed, System.Globalization.NumberStyles.HexNumber);
+                    textBox5.Text = dec.ToString();
                     
+
+
                 }
                 if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)) //&& (LeftTrigger > 0))
                 {
@@ -350,7 +360,10 @@ namespace xbox_3
                         String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                         motion = motion.Remove(0, 1).Insert(0, binary);
                         SendPacket(motion);
-                        textBox2.Text = motion;
+                    string sp = speed[1].ToString() + speed[2].ToString();
+                    int dec = int.Parse(sp, System.Globalization.NumberStyles.HexNumber);
+                    textBox5.Text = dec.ToString();
+                    textBox2.Text = motion;
                     
                 }
                 if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
@@ -391,6 +404,7 @@ namespace xbox_3
                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(test);
+                textBox5.Text = "0";
                 textBox2.Text = test;
 
             }
