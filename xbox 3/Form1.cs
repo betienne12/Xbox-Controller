@@ -31,10 +31,11 @@ namespace xbox_3
         public bool connected = false;
         private double normalizedLX, normalizedLY;
         private string temp = "000";
-        private string initial = "76464";  //inital static packet
-        private string str = "76464"; 
+        private string initial = "75050";  //inital static packet
+        private string str = "75050";
+        private string test;
         private static WlanClient wlan = new WlanClient();
-
+        private static string network = "LAWNMOWER";
 
 
 
@@ -48,20 +49,14 @@ namespace xbox_3
 
         public void Wifi()   //check if connected to lawnmower if not stop mower
         {
-
-           
             Collection<String> connectedSsids = new Collection<string>();
-            string network = "LAWNMOWER";
             bool Connection = NetworkInterface.GetIsNetworkAvailable();
             try
             {
                 if (Connection == true)
                 {
-
                     foreach (WlanClient.WlanInterface wlanInterface in wlan.Interfaces)
-                    {
-
-                        Wlan.Dot11Ssid ssid = wlanInterface.CurrentConnection.wlanAssociationAttributes.dot11Ssid;
+                    {                        Wlan.Dot11Ssid ssid = wlanInterface.CurrentConnection.wlanAssociationAttributes.dot11Ssid;
                         connectedSsids.Add("garbage");
                         connectedSsids.Add(new String(Encoding.ASCII.GetChars(ssid.SSID, 0, (int)ssid.SSIDLength)));
                         if (!((connectedSsids.Contains("garbage")) && (connectedSsids.Contains(network))))
@@ -79,7 +74,6 @@ namespace xbox_3
                         }
                         else
                             textBox4.Text = "Connected";
-
                     }
                 }
             }
@@ -94,15 +88,10 @@ namespace xbox_3
                 str = new string(arr);
                 SendPacket(str);
                textBox4.Text="Lost connection";
-                    
-                
                 textBox2.Text = str;
             }
         }
             
-
-
-
         public void SendPacket(string x)
         {
             Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram,ProtocolType.Udp);
@@ -142,17 +131,11 @@ namespace xbox_3
             string yval = Convert.ToString(normalizedLY);
             MessageBox.Show(xval+ "," + yval);
         }
-        void GetInput()
+        void Navigate()
         {
             State j = controller.GetState();
             LeftTrigger=j.Gamepad.LeftTrigger;
-            
             State stateNew = controller.GetState();
-            
-            
-            //buttons controlls
-           
-            
             if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.RightShoulder && stateNew.Gamepad.Buttons == GamepadButtonFlags.RightShoulder)   //stop button
             {
                 char[] arr = str.ToCharArray();
@@ -170,27 +153,22 @@ namespace xbox_3
                 str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(str);
                 textBox2.Text = str;
-
             }
-            
             stateOld = stateNew;
          }
-       
        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void Navigate()
+        private void GetInput()
         {
             State stateNew = controller.GetState();
             if (LeftTrigger > 0)
             {
                 if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.A && stateNew.Gamepad.Buttons == GamepadButtonFlags.A)  //increase speed
                 {
-                    
                     char[] arr = str.ToCharArray();
                     string speed;
                     string bit_1 = (arr[1]).ToString();
                     string bit_2 = (arr[2]).ToString();
-                    string val = bit_1 + bit_2;    //2 bit hex value to be added
-                                                  
+                    string val = bit_1 + bit_2;    //2 bit hex value to be added                      
                     if (val == "F0")   //F0 = 240 last value without going over 255
                     {
                         speed = "FF";
@@ -208,8 +186,6 @@ namespace xbox_3
                     str = new string(arr);
                     SendPacket(str);
                     textBox2.Text = str;
-
-
                 }
 
                 if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.B && stateNew.Gamepad.Buttons == GamepadButtonFlags.B)  //decrease speed
@@ -225,8 +201,6 @@ namespace xbox_3
                         speed = "00";
                         textBox5.Text = "0";
                     }
-
-
                     else
                     {
                         int intFromHex = int.Parse(val, System.Globalization.NumberStyles.HexNumber) - 20;  //decrement hex value by 20
@@ -250,7 +224,6 @@ namespace xbox_3
                     arr[1] = '1';   //assuming 0 is backwards
                     arr[2] = '1';
                     temp = new string(arr);
-
                     packet[1] = decoy[1];
                     packet[2] = decoy[2];
                     packet[3] = decoy[3];
@@ -268,15 +241,26 @@ namespace xbox_3
                     {
                        
                         char[] speed = str.ToCharArray();
-                        speed[1] = '0';
-                        speed[2] = '0';
-                        speed[3] = '0';
-                        speed[4] = '0';
-                        temp = temp.Remove(0, 1).Insert(0, "1");  //100
-                       
-                        str = new string(speed);
-                        String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-                        str = str.Remove(0, 1).Insert(0, binary);
+                        string text = textBox5.Text;
+                        char[]x  = text.ToCharArray();
+                        if (((speed[1] != 0) && ((speed[2] != 0))) || ((speed[3] != 0) && ((speed[4] != 0))))
+                        {
+                            temp = temp.Remove(0, 1).Insert(0, "1");  //100
+                            String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                            str = str.Remove(0, 1).Insert(0, binary);
+                        }
+                        else
+                        {
+                            speed[1] = '0';
+                            speed[2] = '0';
+                            speed[3] = '0';
+                            speed[4] = '0';
+                            temp = temp.Remove(0, 1).Insert(0, "1");  //100
+                            str = new string(speed);
+                            String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
+                            str = str.Remove(0, 1).Insert(0, binary);
+
+                        }
                         SendPacket(str);
                         textBox2.Text = str;
                         button3.BackColor = SystemColors.Control;
@@ -300,12 +284,9 @@ namespace xbox_3
                         button3.BackColor = System.Drawing.Color.LightSkyBlue;
                         blade_on.BackColor = SystemColors.Control;
                         textBox2.Text = str;
-                    
-
                 }
                 if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadDown && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadDown)) // && (LeftTrigger > 0))
                 {
-                        //Speed_Reset();
                         char[] arr = temp.ToCharArray();
                     
                     arr[1] = '0';   //assuming 0 is backwards
@@ -324,8 +305,7 @@ namespace xbox_3
                 }
                 if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadUp && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadUp)) // && (LeftTrigger > 0))
                 {
-                    
-                        //Speed_Reset();
+    
                         char[] arr = temp.ToCharArray();
                         char[] array = str.ToCharArray();
                         arr[1] = '1';   //assuming one is forward
@@ -344,15 +324,14 @@ namespace xbox_3
                 }
                 if ((this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadLeft && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadLeft)) //&& (LeftTrigger > 0))
                 {
-                        //Speed_Reset();
                         string motion = str;
                         char[] arr = temp.ToCharArray();
                         char[] speed = motion.ToCharArray();
                         arr[1] = '0';   //assuming one is forward
                         arr[2] = '1';  //assuming is backward
 
-                        speed[1] = '6';
-                        speed[2] = '4';
+                        speed[1] = '5';
+                        speed[2] = '0';
                         speed[3] = '0';
                         speed[4] = '0';
                         temp = new string(arr);
@@ -368,7 +347,6 @@ namespace xbox_3
                 }
                 if (this.stateOld.Gamepad.Buttons == GamepadButtonFlags.DPadRight && stateNew.Gamepad.Buttons == GamepadButtonFlags.DPadRight)
                 {
-                        // Speed_Reset();
                         string motion = str;
                         char[] arr = temp.ToCharArray();
                         char[] speed = motion.ToCharArray();
@@ -377,8 +355,8 @@ namespace xbox_3
 
                         speed[1] = '0';
                         speed[2] = '0';
-                        speed[3] = '6';
-                        speed[4] = '4';
+                        speed[3] = '5';
+                        speed[4] = '0';
                         temp = new string(arr);
                         motion = new string(speed);
                         String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
@@ -399,13 +377,15 @@ namespace xbox_3
                 arr[2] = '0';
                 arr[3] = '0';
                 arr[4] = '0';
-                string test = new string(arr);
+                test = new string(arr);
                 temp = new string(array);
                String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
                str = str.Remove(0, 1).Insert(0, binary);
                 SendPacket(test);
                 textBox5.Text = "0";
-                textBox2.Text = test;
+                textBox2.Text = test;//
+                button3.BackColor = System.Drawing.Color.LightSkyBlue;
+                blade_on.BackColor = SystemColors.Control;
 
             }
         }
@@ -554,55 +534,9 @@ namespace xbox_3
             textBox5.Text = dec.ToString();
             textBox2.Text = str;
         }
-       /* private void Speed_Reset()
-        {
-            string reset = str;
-            char[] arr = reset.ToCharArray();
-            arr[1] = '0';
-            arr[2] = '0';
-            arr[3] = '0';
-            arr[4] = '0';
-            reset = new string(arr);
-            SendPacket(reset);
-            textBox2.Text = reset;
-            Stall();
-            //SendPacket(str);
-            //textBox2.Text = str;
-            
-
-        }
-
-       private void Stop()
-        {
-            char[] arr = str.ToCharArray();
-            char[] array = temp.ToCharArray();
-            array[0] = '0';
-            array[1] = '0';
-            array[2] = '0';
-            arr[1] = '0';
-            arr[2] = '0';
-            arr[3] = '0';
-            arr[4] = '0';
-            string test = new string(arr);
-            temp = new string(array);
-            String binary = Convert.ToString(Convert.ToInt32(temp, 2), 10);
-            str = str.Remove(0, 1).Insert(0, binary);
-            SendPacket(test);
-            textBox2.Text = test;
-
-        }
-        private void Stall()
-        {
-            var t = Task.Run(async delegate
-            {
-                await Task.Delay(2000);     //2sec delay
-            });
-            t.Wait();
-        }*/
 
         private void timer3_Tick(object sender, EventArgs e)
         {
-            
             Wifi(); //put in timer
         }
 
@@ -619,7 +553,7 @@ namespace xbox_3
 
         }
 
-        private void timer2_Tick(object sender, EventArgs e)  //timer for joystick updating
+        private void timer2_Tick(object sender, EventArgs e)  
         {
             //clock started in button1()
             // Joystick();
